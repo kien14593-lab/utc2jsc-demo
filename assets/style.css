@@ -25,10 +25,12 @@ ul{list-style:none}
 .topbar .tb-r{display:flex;gap:18px}
 header.site{position:sticky;top:0;z-index:90;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand img{width:52px;height:52px;border-radius:50%;object-fit:cover}
-.brand .bt b{display:block;font-size:17px;color:var(--blue-900);line-height:1.2}
-.brand .bt span{font-size:11px;color:var(--gray);letter-spacing:.4px}
+.brand{display:flex;align-items:center;gap:13px}
+.brand img{width:54px;height:54px;border-radius:50%;object-fit:cover;box-shadow:0 2px 10px rgba(11,45,85,.22)}
+.brand .bt b{display:block;font-size:21.5px;font-weight:800;color:var(--blue-800);line-height:1.12;letter-spacing:.3px}
+.brand .bt b .k2{color:var(--amber-d)}
+.brand .bt span{display:block;font-size:10.5px;color:var(--gray);letter-spacing:2.4px;font-weight:600;margin-top:2px}
+@media(max-width:420px){.brand .bt b{font-size:18px}.brand .bt span{letter-spacing:1.4px}}
 .menu{display:flex;gap:4px;align-items:center}
 .menu>li>a{padding:10px 13px;font-weight:600;font-size:14px;color:var(--ink);border-radius:8px;display:block}
 .menu>li>a:hover,.menu>li>a.on{color:var(--blue-700);background:var(--blue-100)}
