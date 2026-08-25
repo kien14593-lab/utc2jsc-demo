@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản trị – UTC2 JSC</title>
+<meta name="description" content="Công ty Cổ phần UTC2 – Tư vấn, khảo sát, thiết kế, thí nghiệm và kiểm định công trình giao thông, xây dựng.">
+<meta property="og:title" content="Quản trị – UTC2 JSC">
+<meta property="og:description" content="Công ty Cổ phần UTC2 – Tư vấn, khảo sát, thiết kế, thí nghiệm và kiểm định công trình giao thông, xây dựng.">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="topbar"><div class="wrap"><div>🔐 Trang quản trị nội dung – UTC2 JSC</div></div></div>
+<header class="site">
+ <div class="wrap nav">
+  <a class="brand" href="../index.html"><img src="../logo.png" alt=""><span class="bt"><b>UTC2 JSC</b><span>QUẢN TRỊ NỘI DUNG</span></span></a>
+  <a class="btn btn-blue" href="../index.html" style="padding:9px 20px">← Về trang chủ</a>
+ </div>
+</header>
+
+<section class="sec" style="padding:44px 0;background:var(--bg);min-height:calc(100vh - 200px)">
+ <div class="wrap">
+
+  <!-- LOGIN -->
+  <div class="admin-box" id="login-box">
+   <h2 style="color:var(--blue-900);margin-bottom:8px">Đăng nhập quản trị</h2>
+   <p style="color:var(--gray);font-size:14px;margin-bottom:20px">
+    Nhập <b>GitHub Personal Access Token</b> có quyền ghi vào repo
+    <code>kien14593-lab/utc2jsc-demo</code>. Tạo token tại
+    <b>GitHub → Settings → Developer settings → Personal access tokens</b> (chọn quyền <b>repo</b> hoặc Contents: Read &amp; write).
+   </p>
+   <div class="fld"><label>GitHub Token</label><input type="password" id="tok" placeholder="ghp_… hoặc github_pat_…"></div>
+   <button class="abtn pri" onclick="login()">Đăng nhập</button>
+   <div id="login-msg" style="margin-top:14px"></div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" style="display:none">
+   <div class="admin-box" style="margin-bottom:22px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+     <div><b style="color:var(--blue-900)">Xin chào, <span id="who"></span></b>
+      <span style="color:var(--gray);font-size:13px;display:block">Bài viết đăng/sửa sẽ hiển thị trên web sau ~1 phút (GitHub Pages build).</span></div>
+     <div style="display:flex;gap:8px">
+      <button class="abtn pri" onclick="newPost()">＋ Đăng bài mới</button>
+      <button class="abtn" onclick="logout()">Đăng xuất</button>
+     </div>
+    </div>
+    <div id="msg"></div>
+   </div>
+
+   <!-- EDITOR -->
+   <div class="admin-box" id="editor-box" style="display:none;margin-bottom:22px">
+    <h3 style="color:var(--blue-900);margin-bottom:18px" id="ed-title">Đăng bài mới</h3>
+    <div class="fld"><label>Tiêu đề *</label><input id="f-title" placeholder="Tiêu đề bài viết"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+     <div class="fld"><label>Chuyên mục *</label><select id="f-cat"><option value="tin-tuc-utc2-jsc">Tin tức UTC2 JSC</option><option value="hoi-thao-cong-nghe">Hội thảo công nghệ</option><option value="tin-tuc-nganh">Tin tức ngành</option><option value="cong-trinh-tieu-bieu">Công trình tiêu biểu</option><option value="giao-thong-van-tai">Giao thông vận tải</option><option value="ha-tang-ky-thuat">Hạ tầng kỹ thuật</option><option value="xay-dung-dan-dung">Xây dựng dân dụng</option><option value="quy-hoach">Quy hoạch</option><option value="phan-mem">Phần mềm</option><option value="tai-lieu-xay-dung">Tài liệu xây dựng</option><option value="van-ban-phap-luat">Văn bản pháp luật</option></select></div>
+     <div class="fld"><label>Ngày đăng</label><input type="date" id="f-date"></div>
+    </div>
+    <div class="fld"><label>Ảnh đại diện</label>
+     <input type="file" id="f-img" accept="image/*">
+     <div id="f-img-cur" style="font-size:12.5px;color:var(--gray);margin-top:5px"></div>
+    </div>
+    <div class="fld"><label>Tóm tắt</label><textarea id="f-excerpt" rows="2" placeholder="Mô tả ngắn hiển thị ở danh sách"></textarea></div>
+    <div class="fld"><label>Nội dung *</label>
+     <div class="ed-toolbar">
+      <button type="button" onclick="fmt('bold')"><b>B</b></button>
+      <button type="button" onclick="fmt('italic')"><i>I</i></button>
+      <button type="button" onclick="fmt('formatBlock','h3')">Tiêu đề mục</button>
+      <button type="button" onclick="fmt('insertUnorderedList')">• Danh sách</button>
+      <button type="button" onclick="insertImg()">🖼️ Chèn ảnh</button>
+      <input type="file" id="ins-img" accept="image/*" style="display:none">
+     </div>
+     <div class="editor" id="f-content" contenteditable="true"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:6px">
+     <button class="abtn pri" id="btn-save" onclick="savePost()">💾 Lưu & xuất bản</button>
+     <button class="abtn" onclick="closeEditor()">Huỷ</button>
+    </div>
+   </div>
+
+   <!-- LIST -->
+   <div class="admin-box">
+    <h3 style="color:var(--blue-900);margin-bottom:6px">Danh sách bài viết (<span id="count">0</span>)</h3>
+    <div class="fld" style="margin:12px 0"><input id="search" placeholder="🔍 Tìm bài viết…" oninput="drawList()"></div>
+    <div class="admin-list" id="list"><p class="loading">Đăng nhập để tải danh sách…</p></div>
+   </div>
+  </div>
+
+ </div>
+</section>
+
+<script>
+const OWNER='kien14593-lab',REPO='utc2jsc-demo',BRANCH='main',API='https://api.github.com/repos/'+OWNER+'/'+REPO;
+const CATS={"tin-tuc-utc2-jsc": "Tin tức UTC2 JSC", "hoi-thao-cong-nghe": "Hội thảo công nghệ", "tin-tuc-nganh": "Tin tức ngành", "cong-trinh-tieu-bieu": "Công trình tiêu biểu", "giao-thong-van-tai": "Giao thông vận tải", "ha-tang-ky-thuat": "Hạ tầng kỹ thuật", "xay-dung-dan-dung": "Xây dựng dân dụng", "quy-hoach": "Quy hoạch", "phan-mem": "Phần mềm", "tai-lieu-xay-dung": "Tài liệu xây dựng", "van-ban-phap-luat": "Văn bản pháp luật"};
+let TOKEN=localStorage.getItem('gh_token')||'',POSTS=[],SHA='',EDIT_ID=null;
+
+function h(){return{Authorization:'Bearer '+TOKEN,Accept:'application/vnd.github+json'}}
+function msg(t,cls){document.getElementById('msg').innerHTML=t?'<div class="notice '+cls+'" style="margin-top:14px">'+t+'</div>':''}
+function b64encode(str){return btoa(String.fromCharCode(...new TextEncoder().encode(str)))}
+function b64decode(b){return new TextDecoder().decode(Uint8Array.from(atob(b.replace(/\n/g,'')),c=>c.charCodeAt(0)))}
+function slugify(s){return s.toLowerCase()
+ .replace(/[àáạảãâầấậẩẫăằắặẳẵ]/g,'a').replace(/[èéẹẻẽêềếệểễ]/g,'e').replace(/[ìíịỉĩ]/g,'i')
+ .replace(/[òóọỏõôồốộổỗơờớợởỡ]/g,'o').replace(/[ùúụủũưừứựửữ]/g,'u').replace(/[ỳýỵỷỹ]/g,'y').replace(/đ/g,'d')
+ .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70)}
+
+async function login(){
+ const t=document.getElementById('tok').value.trim();if(!t)return;
+ TOKEN=t;
+ const r=await fetch('https://api.github.com/user',{headers:h()});
+ const m=document.getElementById('login-msg');
+ if(!r.ok){m.innerHTML='<div class="notice err">Token không hợp lệ hoặc hết hạn.</div>';return}
+ const u=await r.json();
+ localStorage.setItem('gh_token',t);
+ document.getElementById('who').textContent=u.login;
+ document.getElementById('login-box').style.display='none';
+ document.getElementById('app').style.display='';
+ loadPosts();
+}
+function logout(){localStorage.removeItem('gh_token');location.reload()}
+
+async function loadPosts(){
+ const r=await fetch(API+'/contents/data/posts.json?ref='+BRANCH,{headers:h()});
+ if(!r.ok){msg('Không tải được posts.json ('+r.status+'). Token cần quyền repo.','err');return}
+ const j=await r.json();SHA=j.sha;POSTS=JSON.parse(b64decode(j.content));
+ drawList();
+}
+function drawList(){
+ const q=(document.getElementById('search').value||'').toLowerCase();
+ const list=POSTS.filter(p=>!q||p.title.toLowerCase().includes(q));
+ document.getElementById('count').textContent=POSTS.length;
+ document.getElementById('list').innerHTML=list.map(p=>
+  '<div class="row"><img src="../'+(p.img||'favicon.png')+'" onerror="this.src=\'../favicon.png\'">'
+  +'<div class="t"><b>'+p.title+'</b><span>'+(CATS[p.cat]||p.cat)+' · '+(p.date||'')+'</span></div>'
+  +'<div class="acts"><a class="abtn" target="_blank" href="../tin-tuc/bai-viet.html?id='+encodeURIComponent(p.id)+'">Xem</a>'
+  +'<button class="abtn pri" onclick="editPost(\''+p.id+'\')">Sửa</button>'
+  +'<button class="abtn del" onclick="delPost(\''+p.id+'\')">Xoá</button></div></div>').join('')||'<p class="loading">Không có bài viết.</p>';
+}
+
+function newPost(){
+ EDIT_ID=null;
+ document.getElementById('ed-title').textContent='Đăng bài mới';
+ ['f-title','f-excerpt'].forEach(i=>document.getElementById(i).value='');
+ document.getElementById('f-img').value='';document.getElementById('f-img-cur').textContent='';
+ document.getElementById('f-content').innerHTML='';
+ document.getElementById('f-date').valueAsDate=new Date();
+ document.getElementById('editor-box').style.display='';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function editPost(id){
+ const p=POSTS.find(x=>x.id===id);if(!p)return;
+ EDIT_ID=id;
+ document.getElementById('ed-title').textContent='Sửa bài: '+p.title;
+ document.getElementById('f-title').value=p.title;
+ document.getElementById('f-cat').value=p.cat;
+ document.getElementById('f-excerpt').value=p.excerpt||'';
+ document.getElementById('f-img').value='';
+ document.getElementById('f-img-cur').textContent=p.img?('Ảnh hiện tại: '+p.img):'';
+ const dm=(p.date||'').match(/(\d+)\/(\d+)\/(\d+)/);
+ document.getElementById('f-date').value=dm?dm[3]+'-'+dm[2].padStart(2,'0')+'-'+dm[1].padStart(2,'0'):'';
+ document.getElementById('f-content').innerHTML=(p.html||'').split('src="images/').join('src="../images/');
+ document.getElementById('editor-box').style.display='';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function closeEditor(){document.getElementById('editor-box').style.display='none';EDIT_ID=null}
+function fmt(cmd,val){document.getElementById('f-content').focus();document.execCommand(cmd,false,val)}
+
+async function uploadImage(file){
+ const ts=Date.now();
+ const path='images/uploads/admin-'+ts+'-'+slugify(file.name.replace(/\.[^.]+$/,''))+file.name.match(/\.[^.]+$/)[0].toLowerCase();
+ const buf=await file.arrayBuffer();
+ let bin='';const bytes=new Uint8Array(buf);
+ for(let i=0;i<bytes.length;i+=8192)bin+=String.fromCharCode(...bytes.subarray(i,i+8192));
+ const r=await fetch(API+'/contents/'+path,{method:'PUT',headers:h(),body:JSON.stringify({message:'Upload anh: '+path,content:btoa(bin),branch:BRANCH})});
+ if(!r.ok)throw new Error('Upload ảnh thất bại ('+r.status+')');
+ return path;
+}
+function insertImg(){
+ const inp=document.getElementById('ins-img');
+ inp.onchange=async()=>{
+  if(!inp.files[0])return;
+  msg('Đang tải ảnh lên…','info');
+  try{const p=await uploadImage(inp.files[0]);
+   document.getElementById('f-content').focus();
+   document.execCommand('insertHTML',false,'<img src="../'+p+'" alt="">');
+   msg('Đã chèn ảnh.','ok');
+  }catch(e){msg(e.message,'err')}
+  inp.value='';
+ };
+ inp.click();
+}
+
+async function savePost(){
+ const title=document.getElementById('f-title').value.trim();
+ const content=document.getElementById('f-content').innerHTML.trim();
+ if(!title||!content){msg('Cần nhập tiêu đề và nội dung.','err');return}
+ const btn=document.getElementById('btn-save');btn.disabled=true;msg('Đang xuất bản…','info');
+ try{
+  let img=null;
+  const p0=EDIT_ID?POSTS.find(x=>x.id===EDIT_ID):null;
+  if(p0)img=p0.img;
+  const f=document.getElementById('f-img').files[0];
+  if(f)img=await uploadImage(f);
+  const dv=document.getElementById('f-date').value;
+  const date=dv?dv.split('-').reverse().join('/'):new Date().toLocaleDateString('vi-VN');
+  const html=content.split('src="../images/').join('src="images/');
+  const post={id:EDIT_ID||slugify(title)+'-'+Date.now().toString(36),cat:document.getElementById('f-cat').value,
+   title:title,date:date,img:img,excerpt:document.getElementById('f-excerpt').value.trim(),html:html,source:'admin'};
+  if(EDIT_ID){POSTS[POSTS.findIndex(x=>x.id===EDIT_ID)]=post}else{POSTS.unshift(post)}
+  await commitPosts((EDIT_ID?'Sua bai: ':'Dang bai: ')+title);
+  closeEditor();drawList();
+  msg('✅ Đã xuất bản! Bài sẽ hiển thị trên web sau ~1 phút. <a target="_blank" href="../tin-tuc/bai-viet.html?id='+post.id+'">Xem bài</a>','ok');
+ }catch(e){msg('Lỗi: '+e.message,'err')}
+ btn.disabled=false;
+}
+async function delPost(id){
+ const p=POSTS.find(x=>x.id===id);
+ if(!confirm('Xoá bài: '+p.title+' ?'))return;
+ POSTS=POSTS.filter(x=>x.id!==id);
+ msg('Đang xoá…','info');
+ try{await commitPosts('Xoa bai: '+p.title);drawList();msg('Đã xoá bài viết.','ok')}
+ catch(e){msg('Lỗi: '+e.message,'err');loadPosts()}
+}
+async function commitPosts(message){
+ const body={message:message,content:b64encode(JSON.stringify(POSTS,null,1)),sha:SHA,branch:BRANCH};
+ const r=await fetch(API+'/contents/data/posts.json',{method:'PUT',headers:h(),body:JSON.stringify(body)});
+ if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('Commit thất bại ('+r.status+') '+(e.message||''))}
+ const j=await r.json();SHA=j.content.sha;
+}
+
+if(TOKEN){document.getElementById('tok').value=TOKEN;login()}
+</script>
+</body></html>
