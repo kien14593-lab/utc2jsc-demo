@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UTC2 JSC — Công ty Cổ phần UTC2 | Tư vấn & Xây dựng công trình giao thông</title>
+<meta name="description" content="Công ty Cổ phần UTC2 (UTC2 JSC) — đơn vị tư vấn khảo sát, thiết kế, thẩm tra, thí nghiệm kiểm định công trình giao thông, hạ tầng kỹ thuật trực thuộc Phân hiệu Trường ĐH GTVT tại TP.HCM.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue-900:#0a2c5c; --blue-800:#0d3a78; --blue-700:#1150a0; --blue-600:#1565c0;
+  --blue-50:#eef4fb; --amber:#f5a623; --amber-dark:#e0940f;
+  --ink:#1c2733; --gray:#5b6b7b; --line:#e3eaf2; --bg:#ffffff; --bg-soft:#f6f9fc;
+  --radius:14px; --shadow:0 10px 30px rgba(13,58,120,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+.section{padding:80px 0}
+.section-head{text-align:center;max-width:720px;margin:0 auto 48px}
+.kicker{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-600);background:var(--blue-50);padding:6px 14px;border-radius:999px;margin-bottom:14px}
+.section-head h2{font-size:clamp(26px,3.4vw,38px);font-weight:800;color:var(--blue-900);line-height:1.25}
+.section-head p{margin-top:12px;color:var(--gray);font-size:16.5px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 26px;border-radius:10px;font-weight:600;font-size:15px;transition:.25s;cursor:pointer;border:none}
+.btn-primary{background:var(--amber);color:#20242b}
+.btn-primary:hover{background:var(--amber-dark);transform:translateY(-2px)}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(4px)}
+.btn-ghost:hover{background:rgba(255,255,255,.22)}
+.btn-blue{background:var(--blue-700);color:#fff}
+.btn-blue:hover{background:var(--blue-800);transform:translateY(-2px)}
+
+/* ---------- Topbar ---------- */
+.topbar{background:var(--blue-900);color:#cfe0f5;font-size:13.5px}
+.topbar .container{display:flex;justify-content:space-between;align-items:center;height:38px}
+.topbar a{color:#cfe0f5;display:inline-flex;align-items:center;gap:6px}
+.topbar a:hover{color:#fff}
+.topbar .left{display:flex;gap:22px}
+.topbar .right{display:flex;gap:16px;align-items:center}
+.topbar svg{width:14px;height:14px;fill:currentColor}
+.lang{display:flex;gap:2px;border:1px solid rgba(255,255,255,.25);border-radius:6px;overflow:hidden}
+.lang a{padding:2px 9px;font-weight:600}
+.lang a.active{background:var(--amber);color:#20242b}
+
+/* ---------- Header ---------- */
+header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);transition:box-shadow .3s}
+header.scrolled{box-shadow:0 4px 20px rgba(13,58,120,.08)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+.brand{display:flex;align-items:center;gap:13px}
+.brand .logo{width:54px;height:54px;object-fit:contain}
+.brand b{font-size:19px;color:var(--blue-900);font-weight:800;display:block;line-height:1.15}
+.brand span{font-size:12px;color:var(--gray)}
+nav.menu{display:flex;gap:4px;align-items:center}
+nav.menu>a{padding:10px 15px;font-weight:600;font-size:15px;color:var(--ink);border-radius:8px;position:relative}
+nav.menu>a:hover,nav.menu>a.active{color:var(--blue-700);background:var(--blue-50)}
+.nav-cta{display:flex;gap:12px;align-items:center}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:24px;height:2.5px;background:var(--blue-900);margin:5px 0;border-radius:2px;transition:.3s}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;min-height:640px;display:flex;align-items:center;color:#fff;overflow:hidden;background:linear-gradient(135deg,#0a2c5c,#1150a0)}
+.hero .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s ease}
+.hero .slide.on{opacity:1}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(7,29,61,.88) 20%,rgba(10,44,92,.55) 55%,rgba(10,44,92,.25));z-index:1}
+.hero .container{position:relative;z-index:2;padding-top:70px;padding-bottom:90px}
+.hero .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,166,35,.16);border:1px solid rgba(245,166,35,.5);color:#ffd48a;font-size:13.5px;font-weight:600;padding:7px 16px;border-radius:999px;margin-bottom:22px}
+.hero h1{font-size:clamp(30px,4.6vw,54px);font-weight:800;line-height:1.18;max-width:760px}
+.hero h1 em{font-style:normal;color:var(--amber)}
+.hero p{margin:20px 0 32px;font-size:clamp(15px,1.6vw,18px);color:#d9e6f5;max-width:640px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.hero-dots{position:absolute;bottom:110px;right:40px;z-index:3;display:flex;flex-direction:column;gap:8px}
+.hero-dots button{width:10px;height:10px;border-radius:50%;border:none;background:rgba(255,255,255,.4);cursor:pointer;transition:.3s}
+.hero-dots button.on{background:var(--amber);height:26px;border-radius:6px}
+
+/* Stats bar */
+.stats{position:relative;z-index:5;margin-top:-62px}
+.stats-grid{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden}
+.stat{padding:28px 18px;text-align:center;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat b{font-size:clamp(26px,3vw,38px);font-weight:800;color:var(--blue-700);display:block;line-height:1.1}
+.stat span{font-size:13.5px;color:var(--gray);font-weight:500}
+
+/* ---------- About ---------- */
+.about-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.about-img{position:relative}
+.about-img .main{border-radius:var(--radius);box-shadow:var(--shadow);aspect-ratio:4/3;object-fit:cover;width:100%;background:linear-gradient(135deg,#dbe7f5,#b9cfec)}
+.about-img .tag{position:absolute;bottom:-22px;right:-14px;background:var(--blue-700);color:#fff;padding:18px 24px;border-radius:12px;box-shadow:var(--shadow);text-align:center}
+.about-img .tag b{font-size:30px;display:block;line-height:1;color:#ffd48a}
+.about-img .tag span{font-size:12.5px;opacity:.9}
+.about-txt h2{font-size:clamp(25px,3vw,34px);font-weight:800;color:var(--blue-900);line-height:1.28;margin-bottom:18px}
+.about-txt p{color:var(--gray);margin-bottom:14px;font-size:15.5px}
+.checks{margin:20px 0 28px;display:grid;gap:11px}
+.checks li{list-style:none;display:flex;gap:11px;align-items:flex-start;font-weight:500;font-size:15px}
+.checks svg{width:21px;height:21px;fill:var(--amber);flex-shrink:0;margin-top:2px}
+
+/* ---------- Services ---------- */
+.services{background:var(--bg-soft)}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.svc{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;transition:.3s;position:relative;overflow:hidden}
+.svc:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:transparent}
+.svc .ico{width:54px;height:54px;border-radius:13px;background:var(--blue-50);display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:.3s}
+.svc:hover .ico{background:var(--blue-700)}
+.svc .ico svg{width:27px;height:27px;fill:var(--blue-700);transition:.3s}
+.svc:hover .ico svg{fill:#fff}
+.svc h3{font-size:17.5px;font-weight:700;color:var(--blue-900);margin-bottom:9px}
+.svc p{font-size:14.5px;color:var(--gray)}
+.svc .num{position:absolute;top:18px;right:20px;font-size:44px;font-weight:800;color:var(--blue-50);line-height:1}
+
+/* ---------- Projects ---------- */
+.filter{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
+.filter button{padding:9px 20px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-weight:600;font-size:14px;color:var(--gray);cursor:pointer;transition:.25s;font-family:inherit}
+.filter button.on,.filter button:hover{background:var(--blue-700);border-color:var(--blue-700);color:#fff}
+.prj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.prj{border-radius:var(--radius);overflow:hidden;position:relative;aspect-ratio:4/3;background:linear-gradient(135deg,#2a4d7f,#0d3a78);cursor:pointer}
+.prj img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.prj:hover img{transform:scale(1.07)}
+.prj .ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,25,52,.92) 8%,rgba(7,25,52,.15) 55%,transparent);display:flex;flex-direction:column;justify-content:flex-end;padding:22px}
+.prj .cat{display:inline-block;align-self:flex-start;background:var(--amber);color:#20242b;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:6px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em}
+.prj h3{color:#fff;font-size:17px;font-weight:700;line-height:1.35}
+.prj.hide{display:none}
+
+/* ---------- News ---------- */
+.news{background:var(--bg-soft)}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card{background:#fff;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);transition:.3s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.card .thumb{aspect-ratio:16/9;overflow:hidden;background:linear-gradient(135deg,#dbe7f5,#b9cfec)}
+.card .thumb img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.card:hover .thumb img{transform:scale(1.06)}
+.card .body{padding:22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card .date{font-size:12.5px;color:var(--gray);display:flex;align-items:center;gap:6px;font-weight:500}
+.card .date svg{width:14px;height:14px;fill:var(--amber)}
+.card h3{font-size:16.5px;font-weight:700;color:var(--blue-900);line-height:1.4}
+.card h3 a:hover{color:var(--blue-600)}
+.card p{font-size:14px;color:var(--gray);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card .more{margin-top:auto;font-size:14px;font-weight:600;color:var(--blue-600);display:inline-flex;align-items:center;gap:6px}
+
+/* ---------- Partners ---------- */
+.partners-row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.partner{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 28px;font-weight:700;color:var(--blue-800);font-size:15px;display:flex;align-items:center;gap:10px;transition:.25s}
+.partner:hover{border-color:var(--blue-600);box-shadow:var(--shadow)}
+.partner small{display:block;font-weight:500;color:var(--gray);font-size:11.5px}
+
+/* ---------- CTA ---------- */
+.cta{background:linear-gradient(120deg,var(--blue-900),var(--blue-700));color:#fff;border-radius:20px;padding:56px 48px;display:flex;align-items:center;justify-content:space-between;gap:32px;position:relative;overflow:hidden}
+.cta::before{content:"";position:absolute;right:-80px;top:-80px;width:300px;height:300px;border-radius:50%;background:rgba(245,166,35,.14)}
+.cta h2{font-size:clamp(22px,3vw,32px);font-weight:800;line-height:1.3;max-width:560px}
+.cta p{color:#cfe0f5;margin-top:8px}
+
+/* ---------- Footer ---------- */
+footer{background:var(--blue-900);color:#b9cbe2;font-size:14.5px}
+.f-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1.2fr;gap:40px;padding:64px 0 48px}
+.f-grid h4{color:#fff;font-size:16px;font-weight:700;margin-bottom:18px}
+.f-grid ul{list-style:none;display:grid;gap:10px}
+.f-grid a:hover{color:#fff}
+.f-brand .logo{width:58px;height:58px;border-radius:50%;background:#fff;padding:4px;object-fit:contain;margin-bottom:16px}
+.f-contact li{display:flex;gap:10px;align-items:flex-start}
+.f-contact svg{width:17px;height:17px;fill:var(--amber);flex-shrink:0;margin-top:3px}
+.f-bottom{border-top:1px solid rgba(255,255,255,.12);padding:20px 0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13.5px}
+.socials{display:flex;gap:10px}
+.socials a{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;transition:.25s}
+.socials a:hover{background:var(--amber)}
+.socials svg{width:17px;height:17px;fill:#fff}
+
+/* ---------- Floating ---------- */
+.float-btns{position:fixed;right:20px;bottom:22px;z-index:200;display:flex;flex-direction:column;gap:12px}
+.float-btns a{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.25);transition:.25s;position:relative}
+.float-btns a:hover{transform:scale(1.1)}
+.f-phone{background:#28a745;animation:ring 1.6s infinite}
+.f-zalo{background:#0068ff;color:#fff;font-weight:800;font-size:13px}
+.float-btns svg{width:24px;height:24px;fill:#fff}
+@keyframes ring{0%,100%{box-shadow:0 6px 20px rgba(0,0,0,.25),0 0 0 0 rgba(40,167,69,.5)}70%{box-shadow:0 6px 20px rgba(0,0,0,.25),0 0 0 14px rgba(40,167,69,0)}}
+
+/* ---------- Reveal ---------- */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- Responsive ---------- */
+@media(max-width:1024px){
+  .svc-grid,.prj-grid,.news-grid{grid-template-columns:repeat(2,1fr)}
+  .f-grid{grid-template-columns:repeat(2,1fr)}
+  .about-grid{grid-template-columns:1fr;gap:44px}
+  .hero-dots{display:none}
+}
+@media(max-width:760px){
+  .topbar .left span.hide-m{display:none}
+  nav.menu{position:fixed;top:0;right:-300px;width:280px;height:100vh;background:#fff;flex-direction:column;align-items:stretch;padding:90px 24px 24px;gap:6px;box-shadow:-10px 0 40px rgba(0,0,0,.15);transition:right .35s;z-index:150}
+  nav.menu.open{right:0}
+  nav.menu>a{font-size:16px;padding:13px 16px}
+  .hamburger{display:block;z-index:160;position:relative}
+  .hamburger.x span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+  .hamburger.x span:nth-child(2){opacity:0}
+  .hamburger.x span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+  .nav-cta .btn{display:none}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(2){border-right:none}
+  .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}
+  .svc-grid,.prj-grid,.news-grid{grid-template-columns:1fr}
+  .cta{flex-direction:column;text-align:center;padding:44px 26px}
+  .f-grid{grid-template-columns:1fr;gap:32px;padding:48px 0 36px}
+  .section{padding:60px 0}
+  .hero{min-height:560px}
+  .about-img .tag{right:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="container">
+    <div class="left">
+      <a href="tel:+842837367079"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>(028) 3736 7079</a>
+      <a class="hide-m" href="mailto:info@utc2jsc.com.vn"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg><span class="hide-m">info@utc2jsc.com.vn</span></a>
+    </div>
+    <div class="right">
+      <a href="#"><svg viewBox="0 0 24 24"><path d="M12 2 2 7v2h20V7L12 2zM4 11v8H2v2h20v-2h-2v-8h-3v8h-4v-8h-2v8H7v-8H4z"/></svg>Văn phòng điện tử</a>
+      <div class="lang"><a class="active" href="#">VI</a><a href="#">EN</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header id="header">
+  <div class="container nav">
+    <a class="brand" href="#">
+      <img class="logo" src="logo.png" alt="Logo UTC2 JSC">
+      <div><b>UTC2 JSC</b><span>Công ty Cổ phần UTC2</span></div>
+    </a>
+    <nav class="menu" id="menu">
+      <a href="#" class="active">Trang chủ</a>
+      <a href="#about">Giới thiệu</a>
+      <a href="#services">Lĩnh vực</a>
+      <a href="#projects">Dự án</a>
+      <a href="#news">Tin tức</a>
+      <a href="#contact">Liên hệ</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-blue" href="#contact">Nhận báo giá</a>
+      <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="slide on" style="background-image:url('https://utc2jsc.com.vn/admin/Uploads/HinhAnh/NEN%20TRANG%20CHU/San%20bay%20long%20thanh.png')"></div>
+  <div class="slide" style="background-image:url('https://utc2jsc.com.vn/admin/Uploads/HinhAnh/NEN%20TRANG%20CHU/Ben%20xe%20mien%20dong%20moi.jpg')"></div>
+  <div class="slide" style="background-image:url('https://utc2jsc.com.vn/admin/Uploads/HinhAnh/NEN%20TRANG%20CHU/13.jpg')"></div>
+  <div class="container">
+    <div class="badge">★ Trực thuộc Phân hiệu Trường ĐH GTVT tại TP.HCM</div>
+    <h1>Tư vấn &amp; xây dựng công trình giao thông <em>chuẩn mực — tin cậy</em></h1>
+    <p>UTC2 JSC cung cấp dịch vụ tư vấn khảo sát, thiết kế, thẩm tra, thí nghiệm kiểm định công trình (LASXD-1398) và chuyển giao khoa học công nghệ trong lĩnh vực giao thông vận tải, hạ tầng kỹ thuật.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#projects">Xem dự án tiêu biểu →</a>
+      <a class="btn btn-ghost" href="#about">Về chúng tôi</a>
+    </div>
+  </div>
+  <div class="hero-dots" id="dots"></div>
+</section>
+
+<!-- Stats -->
+<div class="container stats">
+  <div class="stats-grid reveal">
+    <div class="stat"><b data-count="15">0</b><span>Năm kinh nghiệm</span></div>
+    <div class="stat"><b data-count="200">0</b><span>Dự án đã thực hiện</span></div>
+    <div class="stat"><b data-count="50">0</b><span>Kỹ sư &amp; chuyên gia</span></div>
+    <div class="stat"><b data-count="30">0</b><span>Đối tác trong &amp; ngoài nước</span></div>
+  </div>
+</div>
+
+<!-- About -->
+<section class="section" id="about">
+  <div class="container about-grid">
+    <div class="about-img reveal">
+      <img class="main" src="https://utc2jsc.com.vn/admin/Uploads/HinhAnh/NEN%20TRANG%20CHU/Ben%20xe%20mien%20dong%20moi.jpg" alt="Bến xe Miền Đông mới" loading="lazy">
+      <div class="tag"><b>1398</b><span>Phòng LASXD<br>được công nhận</span></div>
+    </div>
+    <div class="about-txt reveal">
+      <span class="kicker">Về chúng tôi</span>
+      <h2>Đơn vị tư vấn xây dựng uy tín, gắn kết học thuật và thực tiễn</h2>
+      <p>Công ty Cổ phần UTC2 trực thuộc Phân hiệu Trường Đại học Giao thông Vận tải tại TP.HCM — kết hợp thế mạnh nghiên cứu khoa học của trường đại học với kinh nghiệm triển khai thực tế các công trình trọng điểm quốc gia.</p>
+      <ul class="checks">
+        <li><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/></svg>Phòng thí nghiệm chuyên ngành xây dựng LASXD-1398 đạt chuẩn</li>
+        <li><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/></svg>Hợp tác quốc tế: KICT (Hàn Quốc), iRAP, Bloomberg Philanthropies</li>
+        <li><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/></svg>Hệ thống quản lý chất lượng chuẩn hoá, đội ngũ giảng viên — kỹ sư giàu kinh nghiệm</li>
+        <li><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/></svg>Tham gia các dự án trọng điểm: Sân bay Long Thành, Bến xe Miền Đông mới…</li>
+      </ul>
+      <a class="btn btn-blue" href="#">Tìm hiểu thêm →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="section services" id="services">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Lĩnh vực hoạt động</span>
+      <h2>Dịch vụ chuyên nghiệp, trọn gói</h2>
+      <p>Từ khảo sát, thiết kế đến thí nghiệm kiểm định và chuyển giao công nghệ.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc reveal"><span class="num">01</span><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.4 9.4 8 10 4.6-.6 8-5 8-10V6l-8-4zm0 4.2 4 2v3.6c0 3.2-1.7 6.1-4 7-2.3-.9-4-3.8-4-7V8.2l4-2z"/></svg></div><h3>Tư vấn khảo sát &amp; lập dự án</h3><p>Khảo sát địa hình, địa chất; lập dự án đầu tư, tổng mức đầu tư xây dựng công trình.</p></div>
+      <div class="svc reveal"><span class="num">02</span><div class="ico"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.42l-2.34-2.33a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></div><h3>Thiết kế bản vẽ thi công</h3><p>Thiết kế công trình giao thông, hạ tầng kỹ thuật, xây dựng dân dụng; lập dự toán, tổng dự toán.</p></div>
+      <div class="svc reveal"><span class="num">03</span><div class="ico"><svg viewBox="0 0 24 24"><path d="M9 21h6v-1H9v1zm3-19a7 7 0 0 0-4 12.7c.6.5 1 1.4 1 2.3h6c0-.9.4-1.8 1-2.3A7 7 0 0 0 12 2zm3 16H9v-1h6v1z"/></svg></div><h3>Thẩm tra thiết kế — dự toán</h3><p>Thẩm tra thiết kế, dự toán; tư vấn quản lý chi phí đầu tư xây dựng công trình.</p></div>
+      <div class="svc reveal"><span class="num">04</span><div class="ico"><svg viewBox="0 0 24 24"><path d="M19 3h-4.2A3 3 0 0 0 12 1a3 3 0 0 0-2.8 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-2 14-4-4 1.4-1.4L10 14.2l6.6-6.6L18 9l-8 8z"/></svg></div><h3>Thí nghiệm kiểm định LASXD-1398</h3><p>Thí nghiệm chuyên ngành xây dựng, kiểm định đánh giá chất lượng, thử tải công trình.</p></div>
+      <div class="svc reveal"><span class="num">05</span><div class="ico"><svg viewBox="0 0 24 24"><path d="M21 3 3 10.5l6.7 2.8L18 7l-6.3 7.3 2.8 6.7L21 3z"/></svg></div><h3>Thẩm tra an toàn giao thông</h3><p>Thẩm tra, đánh giá ATGT đường bộ; xếp hạng sao dự án theo tiêu chuẩn quốc tế iRAP.</p></div>
+      <div class="svc reveal"><span class="num">06</span><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.9V17h2V9L12 3zM5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8-7-3.8z"/></svg></div><h3>Nghiên cứu &amp; chuyển giao KHCN</h3><p>Ứng dụng công nghệ mới (mặt đường nhựa Hàn Quốc — KICT…), đào tạo, hội thảo chuyên ngành.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section class="section" id="projects">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Dự án tiêu biểu</span>
+      <h2>Công trình chúng tôi đã tham gia</h2>
+      <p>Giai đoạn 2014 — 2025, cùng Chi nhánh Công ty TNHH Tư vấn và Xây dựng ĐHGTVT.</p>
+    </div>
+    <div class="filter reveal">
+      <button class="on" data-f="all">Tất cả</button>
+      <button data-f="gt">Giao thông vận tải</button>
+      <button data-f="ht">Hạ tầng kỹ thuật</button>
+      <button data-f="dd">Xây dựng dân dụng</button>
+      <button data-f="qh">Quy hoạch</button>
+    </div>
+    <div class="prj-grid">
+      <div class="prj reveal" data-c="gt"><img src="https://utc2jsc.com.vn/admin/Uploads/HinhAnh/NEN%20TRANG%20CHU/San%20bay%20long%20thanh.png" alt="Sân bay Long Thành" loading="lazy"><div class="ov"><span class="cat">Giao thông vận tải</span><h3>Cảng hàng không quốc tế Long Thành</h3></div></div>
+      <div class="prj reveal" data-c="ht"><img src="https://utc2jsc.com.vn/admin/Uploads/HinhAnh/NEN%20TRANG%20CHU/Ben%20xe%20mien%20dong%20moi.jpg" alt="Bến xe Miền Đông mới" loading="lazy"><div class="ov"><span class="cat">Hạ tầng kỹ thuật</span><h3>Bến xe Miền Đông mới — TP. Thủ Đức</h3></div></div>
+      <div class="prj reveal" data-c="gt"><img src="https://utc2jsc.com.vn/admin/Uploads/HinhAnh/NEN%20TRANG%20CHU/13.jpg" alt="Công trình giao thông" loading="lazy"><div class="ov"><span class="cat">Giao thông vận tải</span><h3>Công nghệ mặt đường nhựa tiên tiến — hợp tác KICT</h3></div></div>
+      <div class="prj reveal" data-c="qh"><img src="https://utc2jsc.com.vn/admin/Uploads/HinhAnh/anh%20click/2341.png" alt="Quy hoạch" loading="lazy"><div class="ov"><span class="cat">Quy hoạch</span><h3>Điều chỉnh, sắp xếp số nhà P. Tân Thới Hiệp, Q.12</h3></div></div>
+      <div class="prj reveal" data-c="gt"><img src="https://utc2jsc.com.vn/admin/Uploads/HinhAnh/Tin%20tuc/Hoi%20thao/Lop%20iRAP%2028.11.19/6.jpg" alt="iRAP" loading="lazy"><div class="ov"><span class="cat">Giao thông vận tải</span><h3>Đánh giá ATGT các tuyến đường TP.HCM theo iRAP</h3></div></div>
+      <div class="prj reveal" data-c="dd"><img src="https://utc2jsc.com.vn/admin/Uploads/HinhAnh/Tin%20tuc/R.jpg" alt="Dự án dân dụng" loading="lazy"><div class="ov"><span class="cat">Xây dựng dân dụng</span><h3>Thí nghiệm — kiểm định công trình dân dụng</h3></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- News -->
+<section class="section news" id="news">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Tin tức &amp; sự kiện</span>
+      <h2>Hoạt động mới nhất</h2>
+    </div>
+    <div class="news-grid">
+      <article class="card reveal">
+        <div class="thumb"><img src="https://utc2jsc.com.vn/admin/Uploads/HinhAnh/Tin%20tuc/R.jpg" alt="" loading="lazy"></div>
+        <div class="body">
+          <span class="date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14v10z"/></svg>17/09/2021</span>
+          <h3><a href="#">Hợp tác với Viện KICT (Hàn Quốc) về công nghệ mặt đường nhựa tiên tiến</a></h3>
+          <p>Nghiên cứu ứng dụng công nghệ thi công mặt đường nhựa tiên tiến của Hàn Quốc cho các tuyến đường bộ quy mô giao thông thấp tại Đồng bằng sông Cửu Long.</p>
+          <a class="more" href="#">Đọc tiếp →</a>
+        </div>
+      </article>
+      <article class="card reveal">
+        <div class="thumb"><img src="https://utc2jsc.com.vn/admin/Uploads/HinhAnh/Tin%20tuc/Hoi%20thao/Lop%20iRAP%2028.11.19/6.jpg" alt="" loading="lazy"></div>
+        <div class="body">
+          <span class="date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14v10z"/></svg>28/11/2019</span>
+          <h3><a href="#">Lớp bồi dưỡng nâng cao: xếp hạng sao dự án đường bộ theo chuẩn iRAP</a></h3>
+          <p>Chương trình phối hợp cùng Quỹ Bloomberg Philanthropies nhằm giảm thiểu tai nạn giao thông trên các tuyến đường rủi ro cao tại TP.HCM.</p>
+          <a class="more" href="#">Đọc tiếp →</a>
+        </div>
+      </article>
+      <article class="card reveal">
+        <div class="thumb"><img src="https://utc2jsc.com.vn/admin/Uploads/HinhAnh/anh%20click/2341.png" alt="" loading="lazy"></div>
+        <div class="body">
+          <span class="date"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14v10z"/></svg>2020</span>
+          <h3><a href="#">CBNV tham gia lớp thẩm tra an toàn giao thông đường bộ năm 2020</a></h3>
+          <p>Nâng cao năng lực đội ngũ kỹ sư về công tác thẩm tra, đánh giá an toàn giao thông đường bộ theo quy định mới.</p>
+          <a class="more" href="#">Đọc tiếp →</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Partners -->
+<section class="section" style="padding-top:60px;padding-bottom:60px">
+  <div class="container">
+    <div class="section-head reveal" style="margin-bottom:32px">
+      <span class="kicker">Đối tác</span>
+      <h2 style="font-size:26px">Hợp tác trong nước &amp; quốc tế</h2>
+    </div>
+    <div class="partners-row reveal">
+      <div class="partner">🎓 UTC2<small>Phân hiệu ĐH GTVT tại TP.HCM</small></div>
+      <div class="partner">🇰🇷 KICT<small>Viện KT &amp; CN Xây dựng Hàn Quốc</small></div>
+      <div class="partner">🌏 iRAP<small>Chương trình đánh giá đường bộ QT</small></div>
+      <div class="partner">🏛 Bloomberg<small>Philanthropies</small></div>
+      <div class="partner">🏗 UTCV<small>Cty TNHH Tư vấn &amp; XD ĐHGTVT</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="container" style="margin-bottom:80px">
+  <div class="cta reveal">
+    <div>
+      <h2>Bạn có dự án cần tư vấn, thẩm tra hay kiểm định?</h2>
+      <p>Liên hệ ngay để được đội ngũ chuyên gia UTC2 JSC hỗ trợ nhanh nhất.</p>
+    </div>
+    <a class="btn btn-primary" style="flex-shrink:0" href="tel:+842837367079">📞 (028) 3736 7079</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer id="contact">
+  <div class="container">
+    <div class="f-grid">
+      <div class="f-brand">
+        <img class="logo" src="logo.png" alt="Logo UTC2 JSC">
+        <p style="font-size:14px">Công ty Cổ phần UTC2 — tư vấn xây dựng, nghiên cứu và chuyển giao khoa học công nghệ, trực thuộc Phân hiệu Trường Đại học GTVT tại TP.HCM.</p>
+      </div>
+      <div>
+        <h4>Liên kết nhanh</h4>
+        <ul>
+          <li><a href="#about">Giới thiệu</a></li>
+          <li><a href="#services">Lĩnh vực hoạt động</a></li>
+          <li><a href="#projects">Dự án tiêu biểu</a></li>
+          <li><a href="#news">Tin tức</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Dịch vụ</h4>
+        <ul>
+          <li><a href="#services">Tư vấn khảo sát — thiết kế</a></li>
+          <li><a href="#services">Thẩm tra thiết kế, dự toán</a></li>
+          <li><a href="#services">Thí nghiệm LASXD-1398</a></li>
+          <li><a href="#services">Thẩm tra ATGT (iRAP)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Liên hệ</h4>
+        <ul class="f-contact">
+          <li><svg viewBox="0 0 24 24"><path d="M12 2a8 8 0 0 0-8 8c0 5.4 7 11.5 7.3 11.8a1 1 0 0 0 1.4 0C13 21.5 20 15.4 20 10a8 8 0 0 0-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>450 Lê Văn Việt, P. Tăng Nhơn Phú A, TP. Thủ Đức, TP.HCM</li>
+          <li><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>(028) 3736 7079 — Fax: (028) 3736 7078</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>info@utc2jsc.com.vn</li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 Công ty Cổ phần UTC2. All rights reserved.</span>
+      <div class="socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 22v-8h3l.5-4H13V7.5c0-1.1.3-1.8 1.9-1.8H17V2.1C16.6 2 15.6 2 14.5 2 12 2 10.3 3.5 10.3 6.7V10H7v4h3.3v8H13z"/></svg></a>
+        <a href="#" aria-label="Youtube"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3L10 15z"/></svg></a>
+        <a href="#" aria-label="Zalo"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 5.9 2 10.7c0 2.6 1.3 4.9 3.4 6.5V22l3.7-2.1c.9.2 1.9.4 2.9.4 5.5 0 10-3.9 10-8.6S17.5 2 12 2z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating buttons -->
+<div class="float-btns">
+  <a class="f-zalo" href="#" aria-label="Zalo">Zalo</a>
+  <a class="f-phone" href="tel:+842837367079" aria-label="Gọi ngay"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg></a>
+</div>
+
+<script>
+// Header shadow
+const header=document.getElementById('header');
+addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>10));
+
+// Mobile menu
+const burger=document.getElementById('burger'),menu=document.getElementById('menu');
+burger.onclick=()=>{burger.classList.toggle('x');menu.classList.toggle('open')};
+menu.querySelectorAll('a').forEach(a=>a.onclick=()=>{burger.classList.remove('x');menu.classList.remove('open')});
+
+// Hero slider
+const slides=[...document.querySelectorAll('.hero .slide')],dots=document.getElementById('dots');
+let cur=0;
+slides.forEach((_,i)=>{const b=document.createElement('button');if(i===0)b.classList.add('on');b.onclick=()=>go(i);dots.appendChild(b)});
+function go(i){slides[cur].classList.remove('on');dots.children[cur].classList.remove('on');cur=i;slides[cur].classList.add('on');dots.children[cur].classList.add('on')}
+setInterval(()=>go((cur+1)%slides.length),5000);
+
+// Reveal on scroll
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Counters
+const cio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;cio.unobserve(e.target);
+  const el=e.target,end=+el.dataset.count,t0=performance.now();
+  (function tick(t){const p=Math.min((t-t0)/1600,1);el.textContent=Math.round(end*(1-Math.pow(1-p,3)))+'+';if(p<1)requestAnimationFrame(tick)})(t0);
+}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+
+// Project filter
+document.querySelectorAll('.filter button').forEach(btn=>btn.onclick=()=>{
+  document.querySelector('.filter .on').classList.remove('on');btn.classList.add('on');
+  const f=btn.dataset.f;
+  document.querySelectorAll('.prj').forEach(p=>p.classList.toggle('hide',f!=='all'&&p.dataset.c!==f));
+});
+</script>
+</body>
+</html>
