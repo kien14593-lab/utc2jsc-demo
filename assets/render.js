@@ -4,19 +4,20 @@ const CATS={"tin-tuc-utc2-jsc": "Tin tức UTC2 JSC", "hoi-thao-cong-nghe": "H�
 function fixHTML(html,R){return html.split('src="images/').join('src="'+R+'images/');}
 function fixImg(p,R){if(!p)return null;if(/^https?:/.test(p))return p;return R+p;}
 async function load(R){const r=await fetch(R+'data/posts.json?v='+Date.now());return await r.json();}
-function card(p,R){
+function card(p,R,viewer){
+  viewer=viewer||'tin-tuc/bai-viet.html';
   const img=fixImg(p.img,R);
   const th=img?'<img src="'+img+'" alt="" loading="lazy">':'<div style="height:100%;display:flex;align-items:center;justify-content:center;font-size:40px">📰</div>';
-  return '<a class="card rv in" href="'+R+'tin-tuc/bai-viet.html?id='+encodeURIComponent(p.id)+'">'
+  return '<a class="card rv in" href="'+R+viewer+'?id='+encodeURIComponent(p.id)+'">'
    +'<div class="thumb">'+th+'</div><div class="body">'
    +'<span class="cat">'+(CATS[p.cat]||p.cat)+'</span><h3>'+p.title+'</h3>'
    +(p.excerpt?'<p>'+p.excerpt+'</p>':'')
    +'<span class="meta">📅 '+(p.date||'')+'</span><span class="more">Đọc tiếp →</span></div></a>';
 }
-async function renderList(elId,cats,R,tabsElId){
+async function renderList(elId,cats,R,tabsElId,viewer){
   const el=document.getElementById(elId);
   let posts=(await load(R)).filter(p=>cats.includes(p.cat));
-  const draw=list=>{el.innerHTML=list.length?list.map(p=>card(p,R)).join(''):'<p class="loading">Chưa có bài viết.</p>';};
+  const draw=list=>{el.innerHTML=list.length?list.map(p=>card(p,R,viewer)).join(''):'<p class="loading">Chưa có bài viết.</p>';};
   if(tabsElId){
     const tEl=document.getElementById(tabsElId);
     tEl.innerHTML='<button class="on" data-c="all">Tất cả</button>'+cats.filter(c=>posts.some(p=>p.cat===c)).map(c=>'<button data-c="'+c+'">'+CATS[c]+'</button>').join('');
@@ -27,7 +28,7 @@ async function renderList(elId,cats,R,tabsElId){
   }
   draw(posts);
 }
-async function renderPost(R){
+async function renderPost(R,viewer){
   const id=new URLSearchParams(location.search).get('id');
   const posts=await load(R);
   const p=posts.find(x=>x.id===id)||posts[0];
@@ -38,7 +39,7 @@ async function renderPost(R){
     +'<div class="art-meta"><span class="c">'+(CATS[p.cat]||p.cat)+'</span><span>📅 Đăng ngày: '+(p.date||'')+'</span></div>'
     +'<div class="prose">'+fixHTML(p.html||('<p>'+(p.excerpt||'')+'</p>'),R)+'</div>';
   const rel=posts.filter(x=>x.cat===p.cat&&x.id!==p.id).slice(0,3);
-  if(rel.length){document.getElementById('rel').innerHTML='<h2 style="color:var(--blue-900);margin:40px 0 20px;font-size:22px">Bài viết liên quan</h2><div class="grid3">'+rel.map(x=>card(x,R)).join('')+'</div>';}
+  if(rel.length){document.getElementById('rel').innerHTML='<h2 style="color:var(--blue-900);margin:40px 0 20px;font-size:22px">Bài viết liên quan</h2><div class="grid3">'+rel.map(x=>card(x,R,viewer)).join('')+'</div>';}
 }
 async function renderHomeNews(elId,R){
   const el=document.getElementById(elId);
