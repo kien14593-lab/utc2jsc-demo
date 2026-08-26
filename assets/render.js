@@ -21,7 +21,7 @@ function card(p,R,viewer,lang){
    +'<div class="thumb">'+th+'</div><div class="body">'
    +'<span class="cat">'+catLabel(p.cat,lang)+'</span><h3>'+tt(p,lang)+'</h3>'
    +(e?'<p>'+e+'</p>':'')
-   +'<span class="meta">📅 '+(p.date||'')+'</span><span class="more">'+T[lang].read+'</span></div></a>';
+   +(p.date?'<span class="meta">📅 '+p.date+'</span>':'<span class="meta"></span>')+'<span class="more">'+T[lang].read+'</span></div></a>';
 }
 async function renderList(elId,cats,R,tabsElId,viewer,lang){
   lang=lang||'vi';
@@ -59,7 +59,7 @@ async function renderPost(R,viewer,lang){
   }
   document.getElementById('art').innerHTML=
     '<h1 class="art-title">'+title+'</h1>'
-    +'<div class="art-meta"><span class="c">'+catLabel(p.cat,lang)+'</span><span>'+T[lang].posted+' '+(p.date||'')+'</span></div>'
+    +'<div class="art-meta"><span class="c">'+catLabel(p.cat,lang)+'</span>'+(p.date?'<span>'+T[lang].posted+' '+p.date+'</span>':'')+'</div>'
     +'<div class="prose">'+fixHTML(body,R)+'</div>';
   const rel=posts.filter(x=>x.cat===p.cat&&x.id!==p.id).slice(0,3);
   if(rel.length){document.getElementById('rel').innerHTML='<h2 style="color:var(--blue-900);margin:40px 0 20px;font-size:22px">'+T[lang].related+'</h2><div class="grid3">'+rel.map(x=>card(x,R,viewer,lang)).join('')+'</div>';}
@@ -78,7 +78,7 @@ async function renderCoop(elId,cat,R,lang){
   el.innerHTML=posts.map(p=>{
     const body=(lang==='en'&&p.html_en)?p.html_en:(p.html||('<p>'+(p.excerpt||'')+'</p>'));
     return '<h2>'+tt(p,lang)+'</h2>'
-      +'<p style="color:#64748b;font-size:14px;margin-top:-6px">'+T[lang].posted+' '+(p.date||'')+'</p>'
+      +(p.date?'<p style="color:#64748b;font-size:14px;margin-top:-6px">'+T[lang].posted+' '+p.date+'</p>':'')
       +fixHTML(body,R);
   }).join('\n<hr style="margin:36px 0;border:none;border-top:1px solid #e2e8f0">\n');
 }

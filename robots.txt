@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kien14593-lab.github.io/utc2jsc-demo/sitemap.xml
