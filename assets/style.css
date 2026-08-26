@@ -214,3 +214,11 @@ footer .bar{border-top:1px solid rgba(255,255,255,.12);padding:16px 0;display:fl
 @media(max-width:920px){.menu .sub{position:static;display:block;box-shadow:none;border:none;padding:2px 0 8px 16px;min-width:0}}
 /* linked images in article = follow link, not zoom */
 .prose a img{cursor:pointer}
+
+/* partner grid */
+.partner-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;align-items:center;justify-content:center;height:118px;box-shadow:var(--shadow-sm);transition:.25s}
+.pcard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--blue-600)}
+.pcard img{max-height:78px;max-width:100%;width:auto;object-fit:contain}
+@media(max-width:920px){.partner-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.partner-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
