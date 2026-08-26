@@ -99,10 +99,15 @@ header.site{position:sticky;top:0;z-index:90;background:rgba(255,255,255,.95);ba
 .phero .bc a{color:#fff}
 /* prose (article content) */
 .prose-wrap{max-width:860px;margin:0 auto}
-.prose{color:#2a3949;font-size:15.5px}
+.prose{color:#2a3949;font-size:15.5px;line-height:1.75}
 .prose p{margin:0 0 14px}
 .prose img{margin:16px auto;border-radius:10px;box-shadow:var(--shadow-sm)}
-.prose h2,.prose h3,.prose h4{color:var(--blue-900);margin:24px 0 10px;line-height:1.3}
+.prose h1,.prose h2,.prose h3,.prose h4,.prose h5{color:var(--blue-900);margin:24px 0 10px;line-height:1.35}
+.prose h1,.prose h2{font-size:21px}
+.prose h3{font-size:18px}
+.prose h4,.prose h5{font-size:16px}
+.prose font{font-size:inherit!important;font-family:inherit!important}
+.prose p,.prose li,.prose td{font-size:inherit}
 .prose ul,.prose ol{margin:0 0 14px 22px}
 .prose ul{list-style:disc}.prose ol{list-style:decimal}
 .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14px}
