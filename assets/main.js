@@ -27,3 +27,31 @@ pills.forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('#prj-grid .card').forEach(c=>{
     c.style.display=(b.dataset.f==='all'||c.dataset.c===b.dataset.f)?'':'none';});
 }));
+// lightbox: click content images to zoom
+const lb=document.createElement('div');lb.className='lb';
+lb.innerHTML='<button class="x" aria-label="Đóng">×</button><button class="nav pv" style="left:14px" aria-label="Ảnh trước">‹</button><img alt=""><button class="nav nx" style="right:14px" aria-label="Ảnh sau">›</button><span class="cnt"></span>';
+document.body.appendChild(lb);
+const lbImg=lb.querySelector('img'),lbCnt=lb.querySelector('.cnt'),lbPv=lb.querySelector('.pv'),lbNx=lb.querySelector('.nx');
+let gal=[],gi=0;
+function lbShow(i){gi=(i+gal.length)%gal.length;lbImg.src=gal[gi];
+  const many=gal.length>1;lbPv.style.display=lbNx.style.display=many?'':'none';
+  lbCnt.textContent=many?(gi+1)+' / '+gal.length:'';}
+function lbClose(){lb.classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('click',e=>{
+  const t=e.target;
+  if(t.tagName==='IMG'&&t.closest('.prose')){
+    e.preventDefault();e.stopPropagation();
+    gal=[...t.closest('.prose').querySelectorAll('img')].map(x=>x.src);
+    lb.classList.add('open');document.body.style.overflow='hidden';
+    lbShow(gal.indexOf(t.src));
+  }
+},true);
+lb.addEventListener('click',e=>{if(e.target===lb||e.target.classList.contains('x'))lbClose();});
+lbPv.addEventListener('click',e=>{e.stopPropagation();lbShow(gi-1)});
+lbNx.addEventListener('click',e=>{e.stopPropagation();lbShow(gi+1)});
+document.addEventListener('keydown',e=>{
+  if(!lb.classList.contains('open'))return;
+  if(e.key==='Escape')lbClose();
+  if(e.key==='ArrowLeft')lbShow(gi-1);
+  if(e.key==='ArrowRight')lbShow(gi+1);
+});
