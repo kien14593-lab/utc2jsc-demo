@@ -38,49 +38,16 @@
  </div>
 </header>
 <section class="phero">
- <div class="wrap"><div class="bc"><a href="../../en/index.html">Home</a> / Projects & works</div><h1>Projects & works</h1></div>
+ <div class="wrap"><div class="bc"><a href="../../en/index.html">Home</a><span class="sep">›</span><b>Projects & works</b></div><h1>Projects & works</h1></div>
 </section>
 <section class="sec">
  <div class="wrap">
-  <div class="sec-head rv"><span class="tag">Featured</span><h2>Featured projects</h2></div>
-  <div class="pills" data-filter>
-   <button class="on" data-f="all">All</button>
-   <button data-f="giao-thong">Transport</button>
-   <button data-f="ha-tang">Infrastructure</button>
-   <button data-f="quy-hoach">Planning</button>
-   <button data-f="hop-tac">International</button>
+  <div class="sec-head rv"><span class="tag">Track record</span><h2>Projects & completed works</h2>
+  <p>Pick a category below, or type a project name to filter quickly. Most archive articles are in Vietnamese.</p></div>
+  <div class="prj-bar rv">
+   <div class="pills" id="da-tabs"></div>
+   <div class="prj-search"><input id="da-q" type="text" placeholder="Filter by project name…" aria-label="Filter projects"></div>
   </div>
-  <div class="grid3" id="prj-grid"><a class="card rv" data-c="giao-thong" href="detail.html?id=du-an-cang-hang-khong-long-thanh">
- <div class="thumb"><img src="../../images/uploads/san-bay-long-thanh-aa73e6.png" alt="Long Thanh International Airport" loading="lazy"></div>
- <div class="body"><span class="cat">Transport</span><h3>Long Thanh International Airport</h3><p>Survey and materials testing for the ground levelling and technical infrastructure packages of Phase 1.</p><span class="more">View details →</span></div>
-</a>
-<a class="card rv" data-c="giao-thong" href="detail.html?id=du-an-cao-toc-ben-luc-long-thanh">
- <div class="thumb"><img src="../../images/uploads/13-7c55ac.jpg" alt="Ben Luc – Long Thanh Expressway" loading="lazy"></div>
- <div class="body"><span class="cat">Transport</span><h3>Ben Luc – Long Thanh Expressway</h3><p>Testing and quality inspection of materials and structural components for packages of this key southern expressway.</p><span class="more">View details →</span></div>
-</a>
-<a class="card rv" data-c="ha-tang" href="detail.html?id=du-an-ben-xe-mien-dong-moi">
- <div class="thumb"><img src="../../images/uploads/ben-xe-mien-dong-moi-a0a583.jpg" alt="New Mien Dong Bus Terminal" loading="lazy"></div>
- <div class="body"><span class="cat">Infrastructure</span><h3>New Mien Dong Bus Terminal</h3><p>Construction supervision and quality inspection of Vietnam's largest bus terminal in Thu Duc City.</p><span class="more">View details →</span></div>
-</a>
-<a class="card rv" data-c="quy-hoach" href="detail.html?id=du-an-quy-hoach-giao-thong-thu-duc">
- <div class="thumb"><img src="../../images/uploads/2341-507a34.png" alt="Thu Duc City Transport Master Plan" loading="lazy"></div>
- <div class="body"><span class="cat">Planning</span><h3>Thu Duc City Transport Master Plan</h3><p>Research and planning of the urban transport network for the eastern area of Ho Chi Minh City.</p><span class="more">View details →</span></div>
-</a>
-<a class="card rv" data-c="hop-tac" href="detail.html?id=du-an-irap-an-toan-giao-thong">
- <div class="thumb"><img src="../../images/uploads/6-838bf8.jpg" alt="iRAP – Road Safety Project" loading="lazy"></div>
- <div class="body"><span class="cat">International</span><h3>iRAP – Road Safety Assessment</h3><p>Partnering with iRAP and Bloomberg Philanthropies to star-rate the safety of roads across Vietnam.</p><span class="more">View details →</span></div>
-</a>
-<a class="card rv" data-c="hop-tac" href="detail.html?id=du-an-hop-tac-kict-han-quoc">
- <div class="thumb"><img src="../../images/uploads/r-8c6a80.jpg" alt="KICT (Korea) Research Cooperation" loading="lazy"></div>
- <div class="body"><span class="cat">International</span><h3>KICT (Korea) Research Cooperation</h3><p>Research cooperation on construction materials and technology with the Korea Institute of Civil Engineering and Building Technology.</p><span class="more">View details →</span></div>
-</a></div>
- </div>
-</section>
-<section class="sec sec-alt">
- <div class="wrap">
-  <div class="sec-head rv"><span class="tag">Project archive</span><h2>Articles on projects & works</h2>
-  <p>The full archive of projects and works – migrated from the previous website (most articles are in Vietnamese).</p></div>
-  <div class="pills" id="da-tabs"></div>
   <div class="grid3" id="da-list"><p class="loading">Loading…</p></div>
  </div>
 </section>
@@ -132,5 +99,36 @@
 </div>
 <script src="../../assets/main.js"></script>
 <script src="../../assets/render.js"></script>
-<script>UTC2.renderList('da-list',['cong-trinh-tieu-bieu','giao-thong-van-tai','ha-tang-ky-thuat','xay-dung-dan-dung','quy-hoach'],'../../','da-tabs','en/projects/detail.html','en');</script>
+<script>
+(async()=>{
+ const R='../../',VIEWER='en/projects/detail.html';
+ const FEAT=['du-an-cang-hang-khong-long-thanh','du-an-cao-toc-ben-luc-long-thanh','du-an-ben-xe-mien-dong-moi','du-an-quy-hoach-giao-thong-thu-duc','du-an-irap-an-toan-giao-thong','du-an-hop-tac-kict-han-quoc'];
+ const CATS=['cong-trinh-tieu-bieu','giao-thong-van-tai','ha-tang-ky-thuat','xay-dung-dan-dung','quy-hoach'];
+ const all=(await UTC2.load(R)).filter(p=>CATS.includes(p.cat));
+ const tEl=document.getElementById('da-tabs'),lEl=document.getElementById('da-list'),qEl=document.getElementById('da-q');
+ const norm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
+ let cur='feat';
+ const pool=()=>cur==='feat'?FEAT.map(id=>all.find(p=>p.id===id)).filter(Boolean)
+              :cur==='all'?all:all.filter(p=>p.cat===cur);
+ function draw(){
+  let list=pool();
+  const q=norm(qEl.value.trim());
+  if(q)list=list.filter(p=>norm(p.title_en||p.title).includes(q)||norm(p.excerpt_en||p.excerpt).includes(q)||norm(p.title).includes(q));
+  lEl.innerHTML=list.length?list.map(p=>UTC2.card(p,R,VIEWER,'en')).join('')
+   :'<p class="loading">'+(q?'No projects match “'+qEl.value.trim()+'”.':'No articles in this category yet.')+'</p>';
+ }
+ tEl.innerHTML='<button data-c="feat">⭐ Featured</button>'
+  +'<button data-c="all">All <span class="n">'+all.length+'</span></button>'
+  +CATS.map(c=>'<button data-c="'+c+'">'+UTC2.CATS_EN[c]+' <span class="n">'+all.filter(p=>p.cat===c).length+'</span></button>').join('');
+ tEl.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+  tEl.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');cur=b.dataset.c;draw();
+ }));
+ const pre=new URLSearchParams(location.search).get('cat');
+ cur=(pre&&CATS.includes(pre))?pre:'feat';
+ tEl.querySelector('button[data-c="'+cur+'"]').classList.add('on');
+ qEl.addEventListener('input',draw);
+ draw();
+})();
+</script>
 </body></html>

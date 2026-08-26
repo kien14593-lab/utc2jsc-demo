@@ -38,10 +38,12 @@
  </div>
 </header>
 <section class="phero">
- <div class="wrap"><div class="bc"><a href="../index.html">Trang chủ</a> / Liên hệ</div><h1>Liên hệ</h1></div>
+ <div class="wrap"><div class="bc"><a href="../index.html">Trang chủ</a><span class="sep">›</span><b>Liên hệ</b></div><h1>Liên hệ</h1></div>
 </section>
 <section class="sec">
- <div class="wrap contact-grid">
+ <div class="wrap">
+  <div class="notice ok" id="cf-ok" style="display:none">✅ Đã gửi yêu cầu thành công! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.</div>
+  <div class="contact-grid">
   <div class="cinfo rv">
    <h2 style="color:var(--blue-900);margin-bottom:22px">Công ty Cổ phần UTC2</h2>
    <div class="row"><div class="ic">📍</div><div><b>Địa chỉ</b><span>450 Lê Văn Việt, P. Tăng Nhơn Phú, TP.HCM</span></div></div>
@@ -50,6 +52,38 @@
    <div class="row"><div class="ic">🕐</div><div><b>Giờ làm việc</b><span>Thứ 2 – Thứ 6: 7h30 – 17h00</span></div></div>
    <a class="btn btn-blue" href="tel:02837367079" style="margin-top:8px">📞 Gọi ngay</a>
   </div>
+  <div class="cform rv">
+   <h2>Gửi yêu cầu tư vấn</h2>
+   <p class="cf-sub">Điền thông tin bên dưới, chúng tôi sẽ liên hệ lại trong 24 giờ làm việc.</p>
+   <form action="https://formsubmit.co/utc2jsc@utc2.edu.vn" method="POST">
+    <input type="hidden" name="_subject" value="[Website UTC2 JSC] Yêu cầu tư vấn mới">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_next" value="https://kien14593-lab.github.io/utc2jsc-demo/lien-he/?sent=1">
+    <div class="f2">
+     <label>Họ và tên *<input required name="Họ tên" placeholder="Nguyễn Văn A"></label>
+     <label>Số điện thoại<input name="Điện thoại" placeholder="09xx xxx xxx"></label>
+    </div>
+    <label>Email *<input required type="email" name="Email" placeholder="ban@congty.vn"></label>
+    <label>Chủ đề
+     <select name="Chủ đề">
+      <option>Tư vấn – khảo sát – thiết kế</option>
+      <option>Thí nghiệm – kiểm định LASXD</option>
+      <option>Tư vấn giám sát</option>
+      <option>Hợp tác – đối tác</option>
+      <option>Khác</option>
+     </select>
+    </label>
+    <label>Nội dung *<textarea required rows="5" name="Nội dung" placeholder="Mô tả nhu cầu của bạn…"></textarea></label>
+    <button class="btn btn-blue" type="submit">📨 Gửi yêu cầu</button>
+    <p class="cf-note">Hoặc gửi email trực tiếp tới <a href="mailto:utc2jsc@utc2.edu.vn"><b>utc2jsc@utc2.edu.vn</b></a></p>
+   </form>
+  </div>
+  </div>
+ </div>
+</section>
+<section class="sec" style="padding-top:0">
+ <div class="wrap">
   <div class="map rv">
    <iframe src="https://www.google.com/maps?q=450+L%C3%AA+V%C4%83n+Vi%E1%BB%87t,+T%C4%83ng+Nh%C6%A1n+Ph%C3%BA,+H%E1%BB%93+Ch%C3%AD+Minh&output=embed" loading="lazy" title="Bản đồ"></iframe>
   </div>
@@ -101,4 +135,5 @@
  <a class="zl" href="https://zalo.me/02837367079" target="_blank" rel="noopener">Zalo</a>
  <a class="ph" href="tel:02837367079">📞</a>
 </div>
-<script src="../assets/main.js"></script></body></html>
+<script src="../assets/main.js"></script>
+<script>if(new URLSearchParams(location.search).get('sent')){var o=document.getElementById('cf-ok');o.style.display='block';o.scrollIntoView({block:'center'});}</script></body></html>

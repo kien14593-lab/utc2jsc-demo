@@ -7,6 +7,15 @@ const T={
  en:{all:'All',read:'Read more →',posted:'📅 Posted:',related:'Related articles',none:'No articles yet.',notfound:'Article not found.',vnonly:'ℹ️ This article is currently available in Vietnamese only.'}
 };
 function catLabel(c,lang){return lang==='en'?(CATS_EN[c]||CATS[c]||c):(CATS[c]||c);}
+const PRJ=['cong-trinh-tieu-bieu','giao-thong-van-tai','ha-tang-ky-thuat','xay-dung-dan-dung','quy-hoach'];
+const LIB=['phan-mem','tai-lieu-xay-dung','van-ban-phap-luat'];
+function secFor(cat,lang){
+  if(PRJ.includes(cat))return lang==='en'?['en/projects/','Projects']:['du-an/','Dự án'];
+  if(LIB.includes(cat))return lang==='en'?['en/library/','Library']:['thu-vien/','Thư viện'];
+  if(cat==='hop-tac-trong-nuoc')return lang==='en'?['en/about/','About']:['gioi-thieu/hop-tac-trong-nuoc.html','Giới thiệu'];
+  if(cat==='hop-tac-ngoai-nuoc')return lang==='en'?['en/about/','About']:['gioi-thieu/hop-tac-ngoai-nuoc.html','Giới thiệu'];
+  return lang==='en'?['en/news/','News']:['tin-tuc/','Tin tức'];
+}
 function tt(p,lang){return (lang==='en'&&p.title_en)?p.title_en:p.title;}
 function ex(p,lang){return (lang==='en'&&p.excerpt_en)?p.excerpt_en:p.excerpt;}
 function fixHTML(html,R){return html.split('src="images/').join('src="'+R+'images/');}
@@ -30,7 +39,8 @@ async function renderList(elId,cats,R,tabsElId,viewer,lang){
   const draw=list=>{el.innerHTML=list.length?list.map(p=>card(p,R,viewer,lang)).join(''):'<p class="loading">'+T[lang].none+'</p>';};
   if(tabsElId){
     const tEl=document.getElementById(tabsElId);
-    tEl.innerHTML='<button data-c="all">'+T[lang].all+'</button>'+cats.map(c=>'<button data-c="'+c+'">'+catLabel(c,lang)+'</button>').join('');
+    const cnt=c=>posts.filter(p=>p.cat===c).length;
+    tEl.innerHTML='<button data-c="all">'+T[lang].all+' <span class="n">'+posts.length+'</span></button>'+cats.map(c=>'<button data-c="'+c+'">'+catLabel(c,lang)+' <span class="n">'+cnt(c)+'</span></button>').join('');
     tEl.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
       tEl.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
       draw(b.dataset.c==='all'?posts:posts.filter(p=>p.cat===b.dataset.c));
@@ -57,8 +67,10 @@ async function renderPost(R,viewer,lang){
   }else{
     body=p.html||('<p>'+(p.excerpt||'')+'</p>');
   }
+  const s=secFor(p.cat,lang);
   document.getElementById('art').innerHTML=
-    '<h1 class="art-title">'+title+'</h1>'
+    '<div class="art-bc"><a href="'+R+(lang==='en'?'en/':'')+'">'+(lang==='en'?'Home':'Trang chủ')+'</a><span class="sep">›</span><a href="'+R+s[0]+'">'+s[1]+'</a><span class="sep">›</span><span>'+catLabel(p.cat,lang)+'</span></div>'
+    +'<h1 class="art-title">'+title+'</h1>'
     +'<div class="art-meta"><span class="c">'+catLabel(p.cat,lang)+'</span>'+(p.date?'<span>'+T[lang].posted+' '+p.date+'</span>':'')+'</div>'
     +'<div class="prose">'+fixHTML(body,R)+'</div>';
   const rel=posts.filter(x=>x.cat===p.cat&&x.id!==p.id).slice(0,3);
@@ -88,5 +100,5 @@ async function renderPartners(elId,R){
   const list=await r.json();
   el.innerHTML=list.map(p=>'<div class="pcard"'+(p.name?' title="'+p.name+'"':'')+'><img src="'+fixImg(p.img,R)+'" alt="'+(p.name||'Đối tác UTC2 JSC')+'" loading="lazy">'+(p.name?'<span class="pname">'+p.name+'</span>':'')+'</div>').join('')||'<p class="loading">Chưa có đối tác.</p>';
 }
-return{renderList,renderPost,renderHomeNews,renderCoop,renderPartners,CATS};
+return{renderList,renderPost,renderHomeNews,renderCoop,renderPartners,CATS,CATS_EN,card,load,catLabel};
 })();
