@@ -192,3 +192,8 @@ footer .bar{border-top:1px solid rgba(255,255,255,.12);padding:16px 0;display:fl
  .hero{min-height:560px}
  .topbar .tb-r{display:none}
 }
+
+/* ---- Language switcher ---- */
+.lang-sw{margin-left:14px;padding:7px 13px;border:1.5px solid var(--line);border-radius:999px;font-weight:700;font-size:12.5px;color:var(--blue-700);white-space:nowrap;flex-shrink:0}
+.lang-sw:hover{background:var(--blue-100)}
+@media(max-width:920px){.lang-sw{margin-left:auto;margin-right:12px}}
