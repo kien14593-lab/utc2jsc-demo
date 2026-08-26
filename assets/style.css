@@ -101,7 +101,9 @@ header.site{position:sticky;top:0;z-index:90;background:rgba(255,255,255,.95);ba
 .prose-wrap{max-width:860px;margin:0 auto}
 .prose{color:#2a3949;font-size:15.5px;line-height:1.75}
 .prose p{margin:0 0 14px}
-.prose img{margin:16px auto;border-radius:10px;box-shadow:var(--shadow-sm)}
+.prose img{display:block;margin:22px auto;width:100%;max-width:760px;height:auto;border-radius:12px;box-shadow:var(--shadow-sm)}
+.prose img.img-sm{width:auto;max-width:min(100%,480px)}
+.prose a img{display:inline-block;width:auto;max-width:100%;margin:6px 0;box-shadow:none}
 .prose h1,.prose h2,.prose h3,.prose h4,.prose h5{color:var(--blue-900);margin:24px 0 10px;line-height:1.35}
 .prose h1,.prose h2{font-size:21px}
 .prose h3{font-size:18px}

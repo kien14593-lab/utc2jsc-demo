@@ -55,3 +55,12 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft')lbShow(gi-1);
   if(e.key==='ArrowRight')lbShow(gi+1);
 });
+// normalize content image sizes: small graphics keep natural size
+function imgSize(im){
+  if(im.closest('a'))return;
+  if(im.naturalWidth&&im.naturalWidth<480)im.classList.add('img-sm');
+}
+document.querySelectorAll('.prose img').forEach(im=>{im.complete?imgSize(im):im.addEventListener('load',()=>imgSize(im),{once:true})});
+document.addEventListener('load',e=>{
+  if(e.target.tagName==='IMG'&&e.target.closest&&e.target.closest('.prose'))imgSize(e.target);
+},true);
