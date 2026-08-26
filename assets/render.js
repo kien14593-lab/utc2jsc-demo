@@ -30,11 +30,16 @@ async function renderList(elId,cats,R,tabsElId,viewer,lang){
   const draw=list=>{el.innerHTML=list.length?list.map(p=>card(p,R,viewer,lang)).join(''):'<p class="loading">'+T[lang].none+'</p>';};
   if(tabsElId){
     const tEl=document.getElementById(tabsElId);
-    tEl.innerHTML='<button class="on" data-c="all">'+T[lang].all+'</button>'+cats.filter(c=>posts.some(p=>p.cat===c)).map(c=>'<button data-c="'+c+'">'+catLabel(c,lang)+'</button>').join('');
+    tEl.innerHTML='<button data-c="all">'+T[lang].all+'</button>'+cats.map(c=>'<button data-c="'+c+'">'+catLabel(c,lang)+'</button>').join('');
     tEl.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
       tEl.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
       draw(b.dataset.c==='all'?posts:posts.filter(p=>p.cat===b.dataset.c));
     }));
+    const pre=new URLSearchParams(location.search).get('cat');
+    const sel=(pre&&cats.includes(pre))?pre:'all';
+    tEl.querySelector('button[data-c="'+sel+'"]').classList.add('on');
+    draw(sel==='all'?posts:posts.filter(p=>p.cat===sel));
+    return;
   }
   draw(posts);
 }

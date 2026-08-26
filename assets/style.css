@@ -202,3 +202,15 @@ footer .bar{border-top:1px solid rgba(255,255,255,.12);padding:16px 0;display:fl
 .lang-sw{margin-left:14px;padding:7px 13px;border:1.5px solid var(--line);border-radius:999px;font-weight:700;font-size:12.5px;color:var(--blue-700);white-space:nowrap;flex-shrink:0}
 .lang-sw:hover{background:var(--blue-100)}
 @media(max-width:920px){.lang-sw{margin-left:auto;margin-right:12px}}
+
+/* nav dropdown (library sections) */
+.menu li{position:relative}
+.menu .caret{font-size:9px;opacity:.55;margin-left:2px}
+.menu .sub{position:absolute;top:100%;left:0;background:#fff;min-width:215px;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:8px;display:none;z-index:80;list-style:none;margin:0}
+.menu li:hover>.sub,.menu li:focus-within>.sub{display:block}
+.menu .sub li{margin:0;width:100%}
+.menu .sub a{display:block;padding:9px 12px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--ink)}
+.menu .sub a:hover{background:var(--blue-100);color:var(--blue-700)}
+@media(max-width:920px){.menu .sub{position:static;display:block;box-shadow:none;border:none;padding:2px 0 8px 16px;min-width:0}}
+/* linked images in article = follow link, not zoom */
+.prose a img{cursor:pointer}

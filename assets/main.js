@@ -39,9 +39,9 @@ function lbShow(i){gi=(i+gal.length)%gal.length;lbImg.src=gal[gi];
 function lbClose(){lb.classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('click',e=>{
   const t=e.target;
-  if(t.tagName==='IMG'&&t.closest('.prose')){
+  if(t.tagName==='IMG'&&t.closest('.prose')&&!t.closest('a')){
     e.preventDefault();e.stopPropagation();
-    gal=[...t.closest('.prose').querySelectorAll('img')].map(x=>x.src);
+    gal=[...t.closest('.prose').querySelectorAll('img')].filter(x=>!x.closest('a')).map(x=>x.src);
     lb.classList.add('open');document.body.style.overflow='hidden';
     lbShow(gal.indexOf(t.src));
   }
