@@ -28,9 +28,16 @@
   <!-- LOGIN -->
   <div class="admin-box" id="login-box">
    <h2 style="color:var(--blue-900);margin-bottom:8px">Đăng nhập quản trị</h2>
-   <p style="color:var(--gray);font-size:14px;margin-bottom:10px">
-    Nhập <b>GitHub Personal Access Token</b> có quyền ghi vào repo <code>kien14593-lab/utc2jsc-demo</code>.
+   <p style="color:var(--gray);font-size:14px;margin-bottom:14px">
+    Tài khoản mặc định: <b>admin / admin</b>
    </p>
+   <div class="fld"><label>Tài khoản</label><input id="usr" value="admin" readonly></div>
+   <div class="fld"><label>Mật khẩu</label><input type="password" id="pw" placeholder="admin" onkeydown="if(event.key==='Enter')login()"></div>
+   <div id="setup-extra" style="display:none">
+    <div class="notice info" style="margin:4px 0 14px;font-size:13.5px">
+     <b>Thiết lập lần đầu trên thiết bị này:</b> dán GitHub Token vào ô dưới (chỉ cần 1 lần duy nhất —
+     từ lần sau chỉ cần đăng nhập <b>admin / admin</b>).
+    </div>
    <details style="margin-bottom:18px;font-size:14px;color:var(--gray)">
     <summary style="cursor:pointer;color:var(--blue-700);font-weight:600">📖 Hướng dẫn tạo token (1 lần, dùng lâu dài)</summary>
     <ol style="margin:10px 0 0 20px;line-height:1.9">
@@ -42,9 +49,13 @@
      <li>Bấm <b>Generate token</b> → sao chép mã <code>github_pat_…</code> và dán vào ô dưới</li>
     </ol>
    </details>
-   <div class="fld"><label>GitHub Token</label><input type="password" id="tok" placeholder="ghp_… hoặc github_pat_…"></div>
+    <div class="fld"><label>GitHub Token</label><input type="password" id="tok" placeholder="ghp_… hoặc github_pat_…"></div>
+   </div>
    <button class="abtn pri" onclick="login()">Đăng nhập</button>
    <div id="login-msg" style="margin-top:14px"></div>
+   <div id="reset-link" style="display:none;margin-top:12px;font-size:13px">
+    <a href="#" onclick="resetTok();return false" style="color:var(--gray)">Quên mật khẩu / đổi token — thiết lập lại</a>
+   </div>
   </div>
 
   <!-- APP -->
@@ -112,7 +123,13 @@
 <script>
 const OWNER='kien14593-lab',REPO='utc2jsc-demo',BRANCH='main',API='https://api.github.com/repos/'+OWNER+'/'+REPO;
 const CATS={"tin-tuc-utc2-jsc": "Tin tức UTC2 JSC", "hoi-thao-cong-nghe": "Hội thảo công nghệ", "tin-tuc-nganh": "Tin tức ngành", "cong-trinh-tieu-bieu": "Công trình tiêu biểu", "giao-thong-van-tai": "Giao thông vận tải", "ha-tang-ky-thuat": "Hạ tầng kỹ thuật", "xay-dung-dan-dung": "Xây dựng dân dụng", "quy-hoach": "Quy hoạch", "phan-mem": "Phần mềm", "tai-lieu-xay-dung": "Tài liệu xây dựng", "van-ban-phap-luat": "Văn bản pháp luật"};
-let TOKEN=localStorage.getItem('gh_token')||'',POSTS=[],SHA='',EDIT_ID=null;
+let TOKEN='',POSTS=[],SHA='',EDIT_ID=null;
+const LS='utc2_admin';
+function b64u(u){return btoa(String.fromCharCode(...u))}
+function ub64(s){return Uint8Array.from(atob(s),c=>c.charCodeAt(0))}
+async function dKey(p,s){const km=await crypto.subtle.importKey('raw',new TextEncoder().encode(p),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt:s,iterations:150000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function encTok(t,p){const s=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));const k=await dKey(p,s);const c=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},k,new TextEncoder().encode(t)));return JSON.stringify({s:b64u(s),i:b64u(iv),c:b64u(c)})}
+async function decTok(b,p){const o=JSON.parse(b);const k=await dKey(p,ub64(o.s));return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub64(o.i)},k,ub64(o.c)))}
 
 function h(){return{Authorization:'Bearer '+TOKEN,Accept:'application/vnd.github+json'}}
 function msg(t,cls){document.getElementById('msg').innerHTML=t?'<div class="notice '+cls+'" style="margin-top:14px">'+t+'</div>':''}
@@ -123,20 +140,37 @@ function slugify(s){return s.toLowerCase()
  .replace(/[òóọỏõôồốộổỗơờớợởỡ]/g,'o').replace(/[ùúụủũưừứựửữ]/g,'u').replace(/[ỳýỵỷỹ]/g,'y').replace(/đ/g,'d')
  .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70)}
 
-async function login(){
- const t=document.getElementById('tok').value.trim();if(!t)return;
- TOKEN=t;
+async function enterApp(){
  const r=await fetch('https://api.github.com/user',{headers:h()});
- const m=document.getElementById('login-msg');
- if(!r.ok){m.innerHTML='<div class="notice err">Token không hợp lệ hoặc hết hạn.</div>';return}
+ if(!r.ok)return false;
  const u=await r.json();
- localStorage.setItem('gh_token',t);
+ sessionStorage.setItem('gh_tok_s',TOKEN);
  document.getElementById('who').textContent=u.login;
  document.getElementById('login-box').style.display='none';
  document.getElementById('app').style.display='';
  loadPosts();
+ return true;
 }
-function logout(){localStorage.removeItem('gh_token');location.reload()}
+async function login(){
+ const m=document.getElementById('login-msg');
+ const pass=document.getElementById('pw').value.trim()||'admin';
+ const enc=localStorage.getItem(LS);
+ if(enc){
+  let ok=false;
+  try{TOKEN=await decTok(enc,pass);ok=true}catch(e){}
+  if(!ok){m.innerHTML='<div class="notice err">Sai mật khẩu.</div>';return}
+  if(!await enterApp())m.innerHTML='<div class="notice err">Token đã lưu bị hết hạn hoặc thu hồi. Bấm "thiết lập lại" bên dưới rồi dán token mới.</div>';
+ }else{
+  const t=document.getElementById('tok').value.trim();
+  if(!t){m.innerHTML='<div class="notice err">Lần đầu thiết lập: cần dán GitHub Token (xem hướng dẫn ở trên).</div>';return}
+  TOKEN=t;
+  if(!await enterApp()){m.innerHTML='<div class="notice err">Token không hợp lệ hoặc hết hạn.</div>';return}
+  localStorage.setItem(LS,await encTok(t,pass));
+  localStorage.removeItem('gh_token');
+ }
+}
+function resetTok(){if(confirm('Xoá token đã lưu trên thiết bị này và thiết lập lại?')){localStorage.removeItem(LS);sessionStorage.removeItem('gh_tok_s');location.reload()}}
+function logout(){sessionStorage.removeItem('gh_tok_s');location.reload()}
 
 async function loadPosts(){
  const r=await fetch(API+'/contents/data/posts.json?ref='+BRANCH,{headers:h()});
@@ -254,6 +288,15 @@ async function commitPosts(message){
  const j=await r.json();SHA=j.content.sha;
 }
 
-if(TOKEN){document.getElementById('tok').value=TOKEN;login()}
+(async function init(){
+ const legacy=localStorage.getItem('gh_token');
+ if(legacy&&!localStorage.getItem(LS)){localStorage.setItem(LS,await encTok(legacy,'admin'));localStorage.removeItem('gh_token')}
+ const s=sessionStorage.getItem('gh_tok_s');
+ if(s){TOKEN=s;if(await enterApp())return;sessionStorage.removeItem('gh_tok_s')}
+ const has=!!localStorage.getItem(LS);
+ document.getElementById('setup-extra').style.display=has?'none':'';
+ document.getElementById('reset-link').style.display=has?'':'none';
+ if(!has)document.getElementById('pw').value='admin';
+})();
 </script>
 </body></html>
