@@ -77,7 +77,7 @@
     <h3 style="color:var(--blue-900);margin-bottom:18px" id="ed-title">Đăng bài mới</h3>
     <div class="fld"><label>Tiêu đề *</label><input id="f-title" placeholder="Tiêu đề bài viết"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-     <div class="fld"><label>Chuyên mục *</label><select id="f-cat"><option value="tin-tuc-utc2-jsc">Tin tức UTC2 JSC</option><option value="hoi-thao-cong-nghe">Hội thảo công nghệ</option><option value="tin-tuc-nganh">Tin tức ngành</option><option value="cong-trinh-tieu-bieu">Công trình tiêu biểu</option><option value="giao-thong-van-tai">Giao thông vận tải</option><option value="ha-tang-ky-thuat">Hạ tầng kỹ thuật</option><option value="xay-dung-dan-dung">Xây dựng dân dụng</option><option value="quy-hoach">Quy hoạch</option><option value="phan-mem">Phần mềm</option><option value="tai-lieu-xay-dung">Tài liệu xây dựng</option><option value="van-ban-phap-luat">Văn bản pháp luật</option></select></div>
+     <div class="fld"><label>Chuyên mục *</label><select id="f-cat"><option value="tin-tuc-utc2-jsc">Tin tức UTC2 JSC</option><option value="hoi-thao-cong-nghe">Hội thảo công nghệ</option><option value="tin-tuc-nganh">Tin tức ngành</option><option value="cong-trinh-tieu-bieu">Công trình tiêu biểu</option><option value="giao-thong-van-tai">Giao thông vận tải</option><option value="ha-tang-ky-thuat">Hạ tầng kỹ thuật</option><option value="xay-dung-dan-dung">Xây dựng dân dụng</option><option value="quy-hoach">Quy hoạch</option><option value="phan-mem">Phần mềm</option><option value="tai-lieu-xay-dung">Tài liệu xây dựng</option><option value="van-ban-phap-luat">Văn bản pháp luật</option><option value="hop-tac-trong-nuoc">Hợp tác trong nước</option><option value="hop-tac-ngoai-nuoc">Hợp tác ngoài nước</option></select><div style="font-size:12px;color:var(--gray);margin-top:4px" id="cat-hint"></div></div>
      <div class="fld"><label>Ngày đăng</label><input type="date" id="f-date"></div>
     </div>
     <div class="fld"><label>Ảnh đại diện</label>
@@ -115,6 +115,18 @@
     <div class="fld" style="margin:12px 0"><input id="search" placeholder="🔍 Tìm bài viết…" oninput="drawList()"></div>
     <div class="admin-list" id="list"><p class="loading">Đăng nhập để tải danh sách…</p></div>
    </div>
+
+   <!-- PARTNERS -->
+   <div class="admin-box" style="margin-top:22px">
+    <h3 style="color:var(--blue-900);margin-bottom:6px">🤝 Đối tác (<span id="pcount">0</span>)</h3>
+    <p style="color:var(--gray);font-size:13.5px;margin-bottom:14px">Logo hiển thị tại trang <b>Giới thiệu → Đối tác</b>. Thêm logo mới hoặc xoá logo cũ.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;margin-bottom:16px">
+     <div class="fld" style="margin:0"><label>Tên đối tác (tuỳ chọn)</label><input id="p-name" placeholder="VD: Sở GTVT TP.HCM"></div>
+     <div class="fld" style="margin:0"><label>Logo *</label><input type="file" id="p-img" accept="image/*"></div>
+     <button class="abtn pri" onclick="addPartner()" style="height:42px">＋ Thêm đối tác</button>
+    </div>
+    <div id="plist" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px"><p class="loading">Đăng nhập để tải…</p></div>
+   </div>
   </div>
 
  </div>
@@ -122,7 +134,8 @@
 
 <script>
 const OWNER='kien14593-lab',REPO='utc2jsc-demo',BRANCH='main',API='https://api.github.com/repos/'+OWNER+'/'+REPO;
-const CATS={"tin-tuc-utc2-jsc": "Tin tức UTC2 JSC", "hoi-thao-cong-nghe": "Hội thảo công nghệ", "tin-tuc-nganh": "Tin tức ngành", "cong-trinh-tieu-bieu": "Công trình tiêu biểu", "giao-thong-van-tai": "Giao thông vận tải", "ha-tang-ky-thuat": "Hạ tầng kỹ thuật", "xay-dung-dan-dung": "Xây dựng dân dụng", "quy-hoach": "Quy hoạch", "phan-mem": "Phần mềm", "tai-lieu-xay-dung": "Tài liệu xây dựng", "van-ban-phap-luat": "Văn bản pháp luật"};
+const CATS={"tin-tuc-utc2-jsc": "Tin tức UTC2 JSC", "hoi-thao-cong-nghe": "Hội thảo công nghệ", "tin-tuc-nganh": "Tin tức ngành", "cong-trinh-tieu-bieu": "Công trình tiêu biểu", "giao-thong-van-tai": "Giao thông vận tải", "ha-tang-ky-thuat": "Hạ tầng kỹ thuật", "xay-dung-dan-dung": "Xây dựng dân dụng", "quy-hoach": "Quy hoạch", "phan-mem": "Phần mềm", "tai-lieu-xay-dung": "Tài liệu xây dựng", "van-ban-phap-luat": "Văn bản pháp luật", "hop-tac-trong-nuoc": "Hợp tác trong nước", "hop-tac-ngoai-nuoc": "Hợp tác ngoài nước"};
+const CAT_HINT={"tin-tuc-utc2-jsc":"Hiển thị ở: Tin tức","hoi-thao-cong-nghe":"Hiển thị ở: Tin tức","tin-tuc-nganh":"Hiển thị ở: Tin tức","cong-trinh-tieu-bieu":"Hiển thị ở: Dự án","giao-thong-van-tai":"Hiển thị ở: Dự án","ha-tang-ky-thuat":"Hiển thị ở: Dự án","xay-dung-dan-dung":"Hiển thị ở: Dự án","quy-hoach":"Hiển thị ở: Dự án","phan-mem":"Hiển thị ở: Thư viện","tai-lieu-xay-dung":"Hiển thị ở: Thư viện","van-ban-phap-luat":"Hiển thị ở: Thư viện","hop-tac-trong-nuoc":"Hiển thị ở: Giới thiệu → Hợp tác trong nước","hop-tac-ngoai-nuoc":"Hiển thị ở: Giới thiệu → Hợp tác ngoài nước"};
 let TOKEN='',POSTS=[],SHA='',EDIT_ID=null;
 const LS='utc2_admin';
 function b64u(u){return btoa(String.fromCharCode(...u))}
@@ -177,6 +190,48 @@ async function loadPosts(){
  if(!r.ok){msg('Không tải được posts.json ('+r.status+'). Token cần quyền repo.','err');return}
  const j=await r.json();SHA=j.sha;POSTS=JSON.parse(b64decode(j.content));
  drawList();
+ loadPartners();
+}
+let PARTNERS=[],PSHA='';
+async function loadPartners(){
+ const r=await fetch(API+'/contents/data/partners.json?ref='+BRANCH,{headers:h()});
+ if(!r.ok)return;
+ const j=await r.json();PSHA=j.sha;PARTNERS=JSON.parse(b64decode(j.content));
+ drawPartners();
+}
+function drawPartners(){
+ document.getElementById('pcount').textContent=PARTNERS.length;
+ document.getElementById('plist').innerHTML=PARTNERS.map((p,i)=>
+  '<div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px;text-align:center">'
+  +'<img src="../'+p.img+'" style="max-height:56px;max-width:100%;object-fit:contain">'
+  +'<div style="font-size:12px;color:var(--gray);margin:6px 0 8px;min-height:16px">'+(p.name||'&nbsp;')+'</div>'
+  +'<button class="abtn del" style="font-size:12px;padding:5px 12px" onclick="delPartner('+i+')">Xoá</button></div>').join('')
+  ||'<p class="loading">Chưa có đối tác.</p>';
+}
+async function addPartner(){
+ const f=document.getElementById('p-img').files[0];
+ if(!f){msg('Chọn file logo trước.','err');return}
+ msg('Đang thêm đối tác…','info');
+ try{
+  const path=await uploadImage(f);
+  PARTNERS.push({name:document.getElementById('p-name').value.trim(),img:path});
+  await commitPartners('Them doi tac');
+  document.getElementById('p-name').value='';document.getElementById('p-img').value='';
+  drawPartners();msg('✅ Đã thêm đối tác. Hiển thị trên web sau ~1 phút.','ok');
+ }catch(e){msg('Lỗi: '+e.message,'err')}
+}
+async function delPartner(i){
+ if(!confirm('Xoá đối tác này?'))return;
+ PARTNERS.splice(i,1);
+ msg('Đang xoá…','info');
+ try{await commitPartners('Xoa doi tac');drawPartners();msg('Đã xoá đối tác.','ok')}
+ catch(e){msg('Lỗi: '+e.message,'err');loadPartners()}
+}
+async function commitPartners(message){
+ const body={message:message,content:b64encode(JSON.stringify(PARTNERS,null,1)),sha:PSHA,branch:BRANCH};
+ const r=await fetch(API+'/contents/data/partners.json',{method:'PUT',headers:h(),body:JSON.stringify(body)});
+ if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('Commit thất bại ('+r.status+') '+(e.message||''))}
+ const j=await r.json();PSHA=j.content.sha;
 }
 function drawList(){
  const q=(document.getElementById('search').value||'').toLowerCase();
@@ -198,6 +253,7 @@ function newPost(){
  document.getElementById('f-img').value='';document.getElementById('f-img-cur').textContent='';
  document.getElementById('f-content').innerHTML='';
  document.getElementById('f-date').valueAsDate=new Date();
+ document.getElementById('cat-hint').textContent=CAT_HINT[document.getElementById('f-cat').value]||'';
  document.getElementById('editor-box').style.display='';
  window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -207,6 +263,7 @@ function editPost(id){
  document.getElementById('ed-title').textContent='Sửa bài: '+p.title;
  document.getElementById('f-title').value=p.title;
  document.getElementById('f-cat').value=p.cat;
+ document.getElementById('cat-hint').textContent=CAT_HINT[p.cat]||'';
  document.getElementById('f-excerpt').value=p.excerpt||'';
  document.getElementById('f-title-en').value=p.title_en||'';
  document.getElementById('f-excerpt-en').value=p.excerpt_en||'';
@@ -221,6 +278,7 @@ function editPost(id){
 }
 function closeEditor(){document.getElementById('editor-box').style.display='none';EDIT_ID=null}
 function fmt(cmd,val){document.getElementById('f-content').focus();document.execCommand(cmd,false,val)}
+document.getElementById('f-cat').addEventListener('change',function(){document.getElementById('cat-hint').textContent=CAT_HINT[this.value]||''});
 
 async function uploadImage(file){
  const ts=Date.now();

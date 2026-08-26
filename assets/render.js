@@ -1,7 +1,7 @@
 
 window.UTC2=(function(){
-const CATS={"tin-tuc-utc2-jsc": "Tin tức UTC2 JSC", "hoi-thao-cong-nghe": "Hội thảo công nghệ", "tin-tuc-nganh": "Tin tức ngành", "cong-trinh-tieu-bieu": "Công trình tiêu biểu", "giao-thong-van-tai": "Giao thông vận tải", "ha-tang-ky-thuat": "Hạ tầng kỹ thuật", "xay-dung-dan-dung": "Xây dựng dân dụng", "quy-hoach": "Quy hoạch", "phan-mem": "Phần mềm", "tai-lieu-xay-dung": "Tài liệu xây dựng", "van-ban-phap-luat": "Văn bản pháp luật"};
-const CATS_EN={"tin-tuc-utc2-jsc": "UTC2 JSC News", "hoi-thao-cong-nghe": "Technology Workshops", "tin-tuc-nganh": "Industry News", "cong-trinh-tieu-bieu": "Featured Projects", "giao-thong-van-tai": "Transportation", "ha-tang-ky-thuat": "Technical Infrastructure", "xay-dung-dan-dung": "Civil Construction", "quy-hoach": "Urban Planning", "phan-mem": "Software", "tai-lieu-xay-dung": "Construction Documents", "van-ban-phap-luat": "Legal Documents"};
+const CATS={"tin-tuc-utc2-jsc": "Tin tức UTC2 JSC", "hoi-thao-cong-nghe": "Hội thảo công nghệ", "tin-tuc-nganh": "Tin tức ngành", "cong-trinh-tieu-bieu": "Công trình tiêu biểu", "giao-thong-van-tai": "Giao thông vận tải", "ha-tang-ky-thuat": "Hạ tầng kỹ thuật", "xay-dung-dan-dung": "Xây dựng dân dụng", "quy-hoach": "Quy hoạch", "phan-mem": "Phần mềm", "tai-lieu-xay-dung": "Tài liệu xây dựng", "van-ban-phap-luat": "Văn bản pháp luật", "hop-tac-trong-nuoc": "Hợp tác trong nước", "hop-tac-ngoai-nuoc": "Hợp tác ngoài nước"};
+const CATS_EN={"tin-tuc-utc2-jsc": "UTC2 JSC News", "hoi-thao-cong-nghe": "Technology Workshops", "tin-tuc-nganh": "Industry News", "cong-trinh-tieu-bieu": "Featured Projects", "giao-thong-van-tai": "Transportation", "ha-tang-ky-thuat": "Technical Infrastructure", "xay-dung-dan-dung": "Civil Construction", "quy-hoach": "Urban Planning", "phan-mem": "Software", "tai-lieu-xay-dung": "Construction Documents", "van-ban-phap-luat": "Legal Documents", "hop-tac-trong-nuoc": "Domestic Cooperation", "hop-tac-ngoai-nuoc": "International Cooperation"};
 const T={
  vi:{all:'Tất cả',read:'Đọc tiếp →',posted:'📅 Đăng ngày:',related:'Bài viết liên quan',none:'Chưa có bài viết.',notfound:'Không tìm thấy bài viết.'},
  en:{all:'All',read:'Read more →',posted:'📅 Posted:',related:'Related articles',none:'No articles yet.',notfound:'Article not found.',vnonly:'ℹ️ This article is currently available in Vietnamese only.'}
@@ -70,5 +70,23 @@ async function renderHomeNews(elId,R,viewer,lang){
   const posts=(await load(R)).filter(p=>cats.includes(p.cat)).slice(0,3);
   el.innerHTML=posts.map(p=>card(p,R,viewer,lang)).join('');
 }
-return{renderList,renderPost,renderHomeNews,CATS};
+async function renderCoop(elId,cat,R,lang){
+  lang=lang||'vi';
+  const el=document.getElementById(elId);
+  const posts=(await load(R)).filter(p=>p.cat===cat);
+  if(!posts.length){el.innerHTML='<p class="loading">'+T[lang].none+'</p>';return;}
+  el.innerHTML=posts.map(p=>{
+    const body=(lang==='en'&&p.html_en)?p.html_en:(p.html||('<p>'+(p.excerpt||'')+'</p>'));
+    return '<h2>'+tt(p,lang)+'</h2>'
+      +'<p style="color:#64748b;font-size:14px;margin-top:-6px">'+T[lang].posted+' '+(p.date||'')+'</p>'
+      +fixHTML(body,R);
+  }).join('\n<hr style="margin:36px 0;border:none;border-top:1px solid #e2e8f0">\n');
+}
+async function renderPartners(elId,R){
+  const el=document.getElementById(elId);
+  const r=await fetch(R+'data/partners.json?v='+Date.now());
+  const list=await r.json();
+  el.innerHTML=list.map(p=>'<div class="pcard"'+(p.name?' title="'+p.name+'"':'')+'><img src="'+fixImg(p.img,R)+'" alt="'+(p.name||'Đối tác UTC2 JSC')+'" loading="lazy">'+(p.name?'<span class="pname">'+p.name+'</span>':'')+'</div>').join('')||'<p class="loading">Chưa có đối tác.</p>';
+}
+return{renderList,renderPost,renderHomeNews,renderCoop,renderPartners,CATS};
 })();
